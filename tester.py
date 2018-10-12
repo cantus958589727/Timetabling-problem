@@ -3,15 +3,16 @@ from TimeSlot import*
 
 
 T1 = TimeSlot("7:30")
-T1.set_prof('dfhgjklhgfxhjklhgf')
-T2 = TimeSlot("8:00")
+##T1.set_prof('dfhgjklhgfxhjklhgf')
+T2 = TimeSlot("9:15")
+T2 = TimeSlot(":15")
 
 monday = [T1, T2]
 
 C1 = Classroom('G201')
-C1.set_time_slot(monday, None, None, None, None)
 
-
+ClassRoomList = []
+ClassRoomList.extend(C1);
 
 
 # access get monday timeslot index 0 timeslot get prof

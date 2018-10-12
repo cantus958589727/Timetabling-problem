@@ -11,13 +11,26 @@ class Classroom(object):
         self.__thursday = None
         self.__friday = None
 
+        self.set_time_slot()    
+
     # set time slot
-    def set_time_slot(self, monday, tuesday, wednesday, thursday, friday):
-        self.__monday = monday
-        self.__tuesday = tuesday
-        self.__wednesday = wednesday
-        self.__thursday = thursday
-        self.__friday = friday
+    def set_time_slot(self):
+        day = 1
+        T =[[for x in range(0,5)] for x in range(0,6)]
+
+        for x in range(0,5):
+            T[x].extend(TimeSlot("7:30"))
+            T[x].extend(TimeSlot("9:15"))
+            T[x].extend(TimeSlot("11:00"))
+            T[x].extend(TimeSlot("12:45"))
+            T[x].extend(TimeSlot("2:30"))
+            T[x].extend(TimeSlot("4:15"))
+            
+        self.__monday = T[0]
+        self.__tuesday = T[1]
+        self.__wednesday = T[2]
+        self.__thursday = T[3]
+        self.__friday = T[4]
 
     # getter
     def get_monday_time(self):
