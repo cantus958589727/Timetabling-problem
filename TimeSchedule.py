@@ -11,19 +11,18 @@ class TimeSchedule(object):
         #        self.mycursor = self.mydb.cursor()
         #        self.counter = 0
         #        #self.initialize()
-        self.test()
-        self.course_id = []
+        self.course_id = [['1919'], ['1920']]
 
     # Schedule function
-    @staticmethod
-    def random_schedule(class_room_list, prof):
+    def random_schedule(self, class_room_list, prof):
         for x in range(0, 4):
             class_room_list[0].available_room_set_prof_mw(prof)
         for x in range(0, 4):
             class_room_list[0].available_room_set_prof_th(prof)
+        for x in range(0, len(self.course_id)):
+            if class_room_list[0].available_room_set_course(self.course_id[x]):
+                print('course set')
 
-    def test(self):
-        self.course_id = ['1919', '1920']
     # def initialize(self):
         # self.mycursor.execute(Select course_id from course)
         # self.courseid = self.mycursor.fetchall()

@@ -72,5 +72,25 @@ class Classroom(object):
                 self.__thursday[x].set_prof(prof)
                 found = True
                 break
-            if not found:
-                return None
+        if not found:
+            return None
+
+    def available_room_set_course(self, course):
+        found = False
+        for x in range(0, 5):
+            if self.__monday[x].get_prof() is not None and self.__monday[x].get_course() is None:
+                self.__monday[x].set_course(course)
+                self.__friday[x].set_course(course)
+                found = True
+                break
+        if not found:
+            for x in range(0, 5):
+                if self.__tuesday[x].get_course() is None and self.__tuesday[x].get_prof() is not None:
+                    self.__tuesday[x].set_course(course)
+                    self.__thursday[x].set_course(course)
+                    found = True
+                    break
+        if not found:
+            return None
+        else:
+            return True
