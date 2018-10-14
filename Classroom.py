@@ -5,32 +5,34 @@ class Classroom(object):
     # initiate
     def __init__(self, room_number):
         self.__room_number = room_number
-        self.__monday = None
-        self.__tuesday = None
-        self.__wednesday = None
-        self.__thursday = None
-        self.__friday = None
+        self.__monday = []
+        self.__tuesday = []
+        self.__wednesday = []
+        self.__thursday = []
+        self.__friday = []
 
         self.set_time_slot()    
 
     # set time slot
     def set_time_slot(self):
-        day = 1
-        T =[[for x in range(0,5)] for x in range(0,6)]
+        t = []
 
-        for x in range(0,5):
-            T[x].extend(TimeSlot("7:30"))
-            T[x].extend(TimeSlot("9:15"))
-            T[x].extend(TimeSlot("11:00"))
-            T[x].extend(TimeSlot("12:45"))
-            T[x].extend(TimeSlot("2:30"))
-            T[x].extend(TimeSlot("4:15"))
+        for y in range(0, 5):
+            t1 = []
+            for x in range(0, 5):
+                t1.extend([TimeSlot('7:30')])
+                t1.extend([TimeSlot("9:15")])
+                t1.extend([TimeSlot("11:00")])
+                t1.extend([TimeSlot("12:45")])
+                t1.extend([TimeSlot("2:30")])
+                t1.extend([TimeSlot("4:15")])
+            t.append(t1)
             
-        self.__monday = T[0]
-        self.__tuesday = T[1]
-        self.__wednesday = T[2]
-        self.__thursday = T[3]
-        self.__friday = T[4]
+        self.__monday = t[0]
+        self.__tuesday = t[1]
+        self.__wednesday = t[2]
+        self.__thursday = t[3]
+        self.__friday = t[4]
 
     # getter
     def get_monday_time(self):
@@ -47,3 +49,28 @@ class Classroom(object):
 
     def get_friday_time(self):
         return self.__friday
+
+    def get_classroom_number(self):
+        return self.__room_number
+
+    def available_room_set_prof_mw(self, prof):
+        found = False
+        for x in range(0, 2):
+            if self.__monday[x].get_prof() is None:
+                self.__monday[x].set_prof(prof)
+                self.__wednesday[x].set_prof(prof)
+                found = True
+                break
+        if not found:
+            return None
+
+    def available_room_set_prof_th(self, prof):
+        found = False
+        for x in range(0, 5):
+            if self.__tuesday[x].get_prof() is None:
+                self.__tuesday[x].set_prof(prof)
+                self.__thursday[x].set_prof(prof)
+                found = True
+                break
+            if not found:
+                return None
