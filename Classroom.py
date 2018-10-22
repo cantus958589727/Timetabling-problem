@@ -19,6 +19,8 @@ class Classroom(object):
         T =[[for x in range(0,5)] for x in range(0,6)]
 
         for x in range(0,5):
+            for y in range(0,6):
+                T[x][y] = TimeSlot("7:30")
             T[x].extend(TimeSlot("7:30"))
             T[x].extend(TimeSlot("9:15"))
             T[x].extend(TimeSlot("11:00"))

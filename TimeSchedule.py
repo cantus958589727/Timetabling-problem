@@ -1,3 +1,4 @@
+from Classroom import *
 
 # Time scheduling
 
@@ -31,9 +32,10 @@ class TimeSchedule(object):
         self.courseid = self.mycursor.fetchall()
 
     def getCourse(self):
-        
-    def random(self):
 
+    def createRandomSched(self):
+        
+        
     def nextCourse(self):
         
         if(self.counter >= len(self.courseid)):
