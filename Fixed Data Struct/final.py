@@ -42,7 +42,7 @@ def getCourseCodeFromDB(courseID):
         if(x < len(courseID)-1):
            param += ' OR '
 
-    print(param)
+##    print(param)
     mycursor.execute("SELECT course_code FROM course WHERE " + param)
     
     myresult = mycursor.fetchall()
@@ -73,17 +73,50 @@ def fillSched(courseCode, prof):
     #create sched per time
     #create sched per day
     #create sched per class
-    matrix = []
+    
     subMatrix = []
     mainMatrix = []
 
+    #for now
+    if(len(courseCode) != len(prof)):
+        return mainMatrix
+
+    for x in range(0, len(courseCode)):
+        container = [courseCode[x], prof[x]]
+        matrix = []
+        matrix.append(container)
+        if(len(subMatrix) < 6):
+            subMatrix.append(matrix)
+        else:
+            mainMatrix.append(subMatrix)
+            subMatrix = []
+            subMatrix.append(matrix)
+            
+    if(len(subMatrix) != 0):
+        mainMatrix.append(subMatrix)
+        
+    
+        
+##    for x in range(0 , len(matrix)/2):
+##        for y in range(x*5, x+5):
+##            subMatrix.append(matrix[y])
+
+    
     return mainMatrix
     
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 prof = getCleanOneTuple(getProfFromDB())
 
-schedule = fillSched 
+schedule = fillSched (courseCode, prof)
+
+for x in range(0, len(schedule)):
+    if(x == 0):
+        print("Monday: ")
+    if(x == 1):
+        print("Tuesday: ")
+    for y in range(0, len(schedule[x])):
+        print(schedule[x][y])
 
 
 
