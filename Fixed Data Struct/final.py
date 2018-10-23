@@ -18,6 +18,22 @@ def getCourseIdFromDB():
 
     return myresult
 
+def getUnitsFromDB():
+    mydb = mysql.connector.connect(
+           host = "localhost",
+           user = "root",
+           passwd = "mysql11",
+           database = "thesis"
+    )
+
+    mycursor = mydb.cursor()
+
+    mycursor.execute("SELECT units FROM course LIMIT 10")
+
+    myresult = mycursor.fetchall()
+
+    return myresult
+
 def getCleanOneTuple(data):
     rawData = data
     cleanData = []
@@ -65,7 +81,7 @@ def getProfFromDB():
 
     return myresult
 
-def fillSched(courseCode, prof):
+def fillSched(courseCode, prof, units):
     #matrix = per time
     #subMatrix = per day
     #mainMatrix = per classroom
@@ -76,7 +92,7 @@ def fillSched(courseCode, prof):
     
     subMatrix = []
     mainMatrix = []
-
+    copyMatrix = []
     #for now
     if(len(courseCode) != len(prof)):
         return mainMatrix
@@ -88,13 +104,31 @@ def fillSched(courseCode, prof):
         if(len(subMatrix) < 6):
             subMatrix.append(matrix)
         else:
+##            copyMatrix.append(subMatrix)
             mainMatrix.append(subMatrix)
             subMatrix = []
             subMatrix.append(matrix)
             
     if(len(subMatrix) != 0):
         mainMatrix.append(subMatrix)
-        
+        subMatrix = []
+
+    for x in range(0, len(courseCode)):
+        #based in the constraints, hours / units will be set as a condition here
+        #to determine whether to add it to a thursday, friday or saturday sched
+        container = [courseCode[x], prof[x]]
+        matrix = []
+        matrix.append(container)
+        if(len(subMatrix) < 6):
+            subMatrix.append(matrix)
+        else:
+##            copyMatrix.append(subMatrix)
+            mainMatrix.append(subMatrix)
+            subMatrix = []
+            subMatrix.append(matrix)
+            
+    if(len(subMatrix) != 0):
+        mainMatrix.append(subMatrix)
     
         
 ##    for x in range(0 , len(matrix)/2):
@@ -103,18 +137,22 @@ def fillSched(courseCode, prof):
 
     
     return mainMatrix
-    
+
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 prof = getCleanOneTuple(getProfFromDB())
+units = getCleanOneTuple(getUnitsFromDB())
 
-schedule = fillSched (courseCode, prof)
+schedule = fillSched (courseCode, prof, units)
 
 for x in range(0, len(schedule)):
-    if(x == 0):
-        print("Monday: ")
-    if(x == 1):
-        print("Tuesday: ")
+    switcher = {
+        0: "Tuesday",
+        1: "Wednesday",
+        2: "Thursday",
+        3: "Friday"
+    }
+    print(switcher.get(x, " "))
     for y in range(0, len(schedule[x])):
         print(schedule[x][y])
 
