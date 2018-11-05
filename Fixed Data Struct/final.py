@@ -198,13 +198,79 @@ def fillSched(courseCode, prof, units):
     
     return mainMatrix
 
+def clearAll():
+    indexSlots = []
+    indexDay = []
+    
+def clearSlotsAndMarkDay(n):
+    indexSlots = []
+    indexDay.append(n)
+    
+def checkIndexSlot(maxSlot, day):
+    if(len(indexSlot) >= maxSlot):
+        clearSlotsAndMarkDay(day)
+        
+def checkIndexDay(days):
+    if(len(indexDay) >= days):
+        clearAll()
+        
+       
+def checkIfEmptySlot(slot):
+    if(slot[0] == "" and slot[1] == ""):
+        return True
+    else:
+        return False
+
+def checkIfIntegerExistInArray(n, arr):
+    i = 0
+    done = False
+    
+    while(i < len(arr) and !done):
+        if(arr[i] == n):
+            done = True
+            
+    return done
+
+def traverseIndex(slot, day, sched):
+    #copy that certain slot of that day in that sched and try to move it to
+    #different slots
+    
+def improveSchedV2(sched):
+    setOfSchedules = []
+    x = 0
+    done = False
+    while(x < len(sched) and !done):
+        checkIndexSlot(len(sched[x]), x)
+        if(!checkIfIntegerExistInArray(x, indexDay)):
+            y = 0
+            while(y < len(sched[x]) and !done):
+                if(!checkIfIntegerExistInArray(y, indexSlot)):
+                    indexSlot.append(y)
+                    done = True
+            x++
+        else:
+            x++
+
+    if(done):
+        last = len(indexSlot) - 1
+        setOfSchedules = traverseIndex(indexSlot[last], x, sched)
+
+    return setOfSchedules                            
+       
+    #move scheds multiple times
+    #assuming all courses are set on a specific time slot
+    #return multiple instances of MainMatrix
+
+
+indexDay = []
+indexSlot = []
+
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 prof = getCleanOneTuple(getProfFromDB())
 units = getCleanOneTuple(getUnitsFromDB())
 
 schedule = fillSched (courseCode, prof, units)
-
 
 printSched(schedule)
 
