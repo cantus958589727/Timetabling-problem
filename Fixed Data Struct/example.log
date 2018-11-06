@@ -1,0 +1,257 @@
+INFO:root:Start of Multiple Schedule
+INFO:root:Schedule 1
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO2', 22647488], ['COMPRO1', 22546752], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO2', 22647488], ['COMPRO1', 22546752], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 2
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 3
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['INTRODB', 22414157], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['INTRODB', 22414157], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 4
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['ADVANDB', 22711414], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['COMPRO2', 22647488], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['ADVANDB', 22711414], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['COMPRO2', 22647488], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 5
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SWDESPA', 22523467], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['COMPRO2', 22647488]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SWDESPA', 22523467], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['COMPRO2', 22647488]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 6
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['WEBAPDE', 22039001], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['COMPRO2', 22647488], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['WEBAPDE', 22039001], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['COMPRO2', 22647488], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 7
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SOFENGG', 22373844], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['COMPRO2', 22647488], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SOFENGG', 22373844], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['COMPRO2', 22647488], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 8
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SECURDE', 22177932], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['COMPRO2', 22647488], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SECURDE', 22177932], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['COMPRO2', 22647488], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 9
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['PROSDEV', 22718119], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['COMPRO2', 22647488], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['PROSDEV', 22718119], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['COMPRO2', 22647488], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 10
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['COMPRO2', 22647488], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['COMPRO2', 22647488], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Schedule 11
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['COMPRO2', 22647488]]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['COMPRO2', 22647488]]
+INFO:root:End of Single Schedule
+INFO:root:End of Multiple Schedule
+INFO:root:Start of Multiple Scheduling Score
+INFO:root:Schedule 1
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO2', 22647488], ['COMPRO1', 22546752], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO2', 22647488], ['COMPRO1', 22546752], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 2
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 3
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['INTRODB', 22414157], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['INTRODB', 22414157], ['OBJECTP', 22723489], ['COMPRO2', 22647488], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 4
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['ADVANDB', 22711414], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['COMPRO2', 22647488], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['ADVANDB', 22711414], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['COMPRO2', 22647488], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 5
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SWDESPA', 22523467], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['COMPRO2', 22647488]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SWDESPA', 22523467], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['COMPRO2', 22647488]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 6
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['WEBAPDE', 22039001], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['COMPRO2', 22647488], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['WEBAPDE', 22039001], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['COMPRO2', 22647488], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 7
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SOFENGG', 22373844], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['COMPRO2', 22647488], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SOFENGG', 22373844], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['COMPRO2', 22647488], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 8
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['SECURDE', 22177932], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['COMPRO2', 22647488], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['SECURDE', 22177932], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['COMPRO2', 22647488], ['PROSDEV', 22718119], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 9
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['PROSDEV', 22718119], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['COMPRO2', 22647488], ['', ''], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['PROSDEV', 22718119], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['COMPRO2', 22647488], ['', ''], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 4
+INFO:root:Schedule 10
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['COMPRO2', 22647488], ['', '']]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['COMPRO2', 22647488], ['', '']]
+INFO:root:End of Single Schedule
+INFO:root:Score: 2
+INFO:root:Schedule 11
+INFO:root:Start of Single Schedule
+INFO:root:Tuesday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Wednesday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['COMPRO2', 22647488]]
+INFO:root:Thursday
+INFO:root:[['COMPRO1', 22546752], ['', ''], ['OBJECTP', 22723489], ['INTRODB', 22414157], ['ADVANDB', 22711414], ['SWDESPA', 22523467]]
+INFO:root:Friday
+INFO:root:[['WEBAPDE', 22039001], ['SOFENGG', 22373844], ['SECURDE', 22177932], ['PROSDEV', 22718119], ['', ''], ['COMPRO2', 22647488]]
+INFO:root:End of Single Schedule
+INFO:root:Score: 0
+INFO:root:End of Multiple Scheduling Score

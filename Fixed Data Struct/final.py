@@ -4,6 +4,8 @@ from Scheduler import*
 import re
 import copy
 import time
+import logging
+logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 #this function will determine if a course is already in the sched
 def isCourseSet():
@@ -362,10 +364,99 @@ def improveSchedV2(sched):
     #assuming all courses are set on a specific time slot
     #return multiple instances of MainMatrix
 
+def gapYScoring(sched, score):
+    for x in range(0, len(sched)):
+        tempScore = 1
+        prevCheck = False
+        currCheck = False
+        perfect = True
+        multiplier = 1
+        for y in range(0, len(sched[x])):
+##            print(y)
+            if(y == 0):
+                if(not(sched[x][y][0] == "")):
+                    prevCheck = True
+            else:
+                if(not(sched[x][y][0] == "")):
+                    currCheck = True
+                else:
+                    currCheck = False
+
+                if(not(currCheck) and prevCheck and tempScore == 1):
+##                    print("T, F")
+                    tempScore -= multiplier
+                elif(not(prevCheck) and currCheck and tempScore <= 0):
+##                    print("F, T")
+                    score += tempScore
+                    multiplier += 1
+                    perfect = False
+                elif(not(currCheck) and not(prevCheck) and tempScore <= 0):
+##                    print("F, F")
+                    tempScore -= multiplier
+                elif(currCheck and prevCheck):
+##                    print("T, T")
+                    if(tempScore <= 0):
+                        tempScore = 1
+                        
+                prevCheck = currCheck
+                
+        if(perfect):
+            score += 1
+        
+##        print("current score: ", score)
+                    
+    return score
+
+def mainScoringFunction(sched):
+    score = 0
+    ##define multiple scoring functions
+    score += gapYScoring(sched, score)
+
+    return score
+
 def printSample(editedSched):
     for x in range(len(editedSched)):
         printSched(editedSched[x])
         
+def logMultipleSchedule(sched):
+    logging.info("Start of Multiple Schedule")
+    for x in range(0, len(sched)):
+        logging.info("Schedule " + str(x+1))
+        logSchedule(sched[x])
+    logging.info("End of Multiple Schedule")
+    
+def logSchedule(sched):
+    logging.info("Start of Single Schedule")
+    for x in range(len(sched)):
+        switcher = {
+            0: "Tuesday",
+            1: "Wednesday",
+            2: "Thursday",
+            3: "Friday"
+        }
+        logging.info(switcher.get(x, "Index out of bounds!"))
+        logging.info(sched[x])
+    logging.info("End of Single Schedule")
+        
+def logMessage(msg, val):
+    logging.info(msg + " " + str(val))
+
+def logScoreSchedule(sched):
+    logging.info("Start of Scheduling Score")
+    logSchedule(sched)
+    logging.info("Score: " + str(mainScoringFunction(sched)))
+    logging.info("End of Scheduling Score")
+
+def logMultipleScoreSchedule(sched):
+    logging.info("Start of Multiple Scheduling Score")
+    
+    for x in range(0, len(sched)):
+        logging.info("Schedule " + str(x+1))
+        logSchedule(sched[x])
+        logging.info("Score: " + str(mainScoringFunction(sched[x])))
+        
+    logging.info("End of Multiple Scheduling Score")
+    
 indexDay = []
 indexSlot = []
 
@@ -378,21 +469,28 @@ schedule = fillSched (courseCode, prof, units)
 
 printSched(schedule)
 
+print("Score: ", mainScoringFunction(schedule))
 ##schedule = improveSched(schedule,1,1)
 
-printSched(schedule)
+##printSched(schedule)
 
 ##improveSched(schedule,1,1)
 
-start = time.time()
+##start = time.time()
 sample = improveSchedV2(schedule)
-end = time.time()
+##end = time.time()
 
+print("Created schedule length: ", len(sample))
 printSample(sample)
 
 sample = improveSchedV2(schedule)
-printSample(sample)
-print("time elapsed:", end - start)
+##printSample(sample)
+##print("time elapsed:", end - start)
 
+logMultipleSchedule(sample)
+logMultipleScoreSchedule(sample)
 
-
+##for x in range(0, len(sample)):
+##    print("Schedule " , x+1)
+##    printSched(sample[x])
+##    print("Score: ", mainScoringFunction(sample[x]))
