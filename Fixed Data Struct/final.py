@@ -2,7 +2,8 @@ import datetime
 import mysql.connector
 from Scheduler import*
 import re
-
+import copy
+import time
 
 #this function will determine if a course is already in the sched
 def isCourseSet():
@@ -151,37 +152,42 @@ def fillSched(courseCode, prof, units):
 
     for x in range(0, len(courseCode)):
         container = [courseCode[x], prof[x]]
-        matrix = []
-        matrix.append(container)
         if(len(subMatrix) < 6):
-            subMatrix.append(matrix)
+            subMatrix.append(container)
         else:
 ##            copyMatrix.append(subMatrix)
             mainMatrix.append(subMatrix)
             numOfSetCourses += len(subMatrix)
             subMatrix = []
-            subMatrix.append(matrix)
+            subMatrix.append(container)
             
     if(len(subMatrix) != 0):
-        mainMatrix.append(subMatrix)
         numOfSetCourses += len(subMatrix)
+        emptyMatrix = ["", ""]
+        while(len(subMatrix) < 6):
+            subMatrix.append(emptyMatrix)
+        mainMatrix.append(subMatrix)
+        
         subMatrix = []
 
     for x in range(0, len(courseCode)):
         #based in the constraints, hours / units will be set as a condition here
         #to determine whether to add it to a thursday, friday or saturday sched
         container = [courseCode[x], prof[x]]
-        matrix = []
-        matrix.append(container)
+##        matrix = []
+##        matrix.append(container)
         if(len(subMatrix) < 6):
-            subMatrix.append(matrix)
+            subMatrix.append(container)
         else:
 ##            copyMatrix.append(subMatrix)
             mainMatrix.append(subMatrix)
             subMatrix = []
-            subMatrix.append(matrix)
+            subMatrix.append(container)
             
     if(len(subMatrix) != 0):
+        emptyMatrix = ["", ""]
+        while(len(subMatrix) < 6):
+            subMatrix.append(emptyMatrix)
         mainMatrix.append(subMatrix)
 
     #Assuming it goes through the list top to bottom
@@ -221,39 +227,134 @@ def checkIfEmptySlot(slot):
     else:
         return False
 
+def checkSlotSimilarity(slot1, slot2):
+    done = False
+    i = 0
+    while(i < len(slot1) and not(done)):
+        if(slot1[i] != slot2[i]):
+            done = True
+        i += 1
+        
+    return not(done)
+
 def checkIfIntegerExistInArray(n, arr):
     i = 0
     done = False
     
-    while(i < len(arr) and !done):
+    while(i < len(arr) and not(done)):
         if(arr[i] == n):
             done = True
+        i +=1
             
     return done
 
+def checkCourseExistInMultiple(course, day, sched):
+    interval = [day]
+    for x in range(0, len(sched)):
+        if(not(x == day)):
+            done = False
+            y = 0
+            while(y < len(sched[x]) and not(done)):
+                if(checkSlotSimilarity(sched[x][y], course)):
+                   done = True
+
+                y += 1
+                   
+            if(done):
+                interval.append(x)
+    if(len(interval) > 1):
+        return interval[0] - interval[1]
+    else:
+        return 0
+    
 def traverseIndex(slot, day, sched):
     #copy that certain slot of that day in that sched and try to move it to
     #different slots
-    
+    setOfSchedules = []
+    copyMatrix = copy.deepcopy(sched[day][slot])
+    print("copying this: ", copyMatrix)
+    interval = checkCourseExistInMultiple(copyMatrix, day, sched)
+    if(interval == 0):
+        for x in range(0, len(sched)):
+            for y in range(0, len(sched[x])):
+                if(not(x == day and y == slot)):
+                    editedSched = sched.copy()
+                    editedSched[day][slot] = sched[x][y]
+                    editedSched[x][y] = copyMatrix
+                    setOfSchedules.append(editedSched)
+                           
+        return setOfSchedules        
+
+    else:
+        if(interval < 0):
+            interval *= -1
+        print(interval)
+        for x in range(0, len(sched)//2):
+            print(x)
+            for y in range(0, len(sched[x])):
+                if(not(x == day and y == slot) and not(x == day - interval) and not(x == day + interval)):                                           
+                    editedSched = copy.deepcopy(sched)
+                    
+                    print("target: " , sched[x][y])
+                    print("target: " , sched[x+interval][y])
+                    
+                    print("editedSched: " , editedSched[day][slot])
+                    if(day + interval > len(sched)):
+                        print("editedSched: " , editedSched[day-interval][slot])
+                    else:
+                        print("editedSched: " , editedSched[day+interval][slot])
+                        
+                    
+                    editedSched[day][slot] = sched[x][y]
+                    if(day + interval > len(sched)):
+                        editedSched[day-interval][slot] = sched[x+interval][y]
+                    else:
+                        editedSched[day+interval][slot] = sched[x+interval][y]
+                        
+                    editedSched[x][y] = copyMatrix
+                    editedSched[x+interval][y] = copyMatrix
+                    
+                    print("new editedSched: " , editedSched[day][slot])
+                    if(day + interval > len(sched)):
+                        print("new editedSched: " , editedSched[day-interval][slot])
+                    else:
+                        print("new editedSched: " , editedSched[day+interval][slot])
+
+                    print("new editedSched: ", editedSched[x][y])
+                    print("new editedSched: ", editedSched[x+interval][y])
+
+                    setOfSchedules.append(editedSched)
+                else:
+                    print("skipped values!", x, y)
+                    
+        return setOfSchedules
+                
+                
 def improveSchedV2(sched):
     setOfSchedules = []
     x = 0
     done = False
-    while(x < len(sched) and !done):
+    while(x < len(sched) and not(done)):
         checkIndexSlot(len(sched[x]), x)
-        if(!checkIfIntegerExistInArray(x, indexDay)):
+        if(not(checkIfIntegerExistInArray(x, indexDay))):
+            print("Integer Does Not Exist In Array!")
             y = 0
-            while(y < len(sched[x]) and !done):
-                if(!checkIfIntegerExistInArray(y, indexSlot)):
+            while(y < len(sched[x]) and not(done)):
+                if(not(checkIfIntegerExistInArray(y, indexSlot))):
                     indexSlot.append(y)
                     done = True
-            x++
+                    
+                y += 1
+                
+            x += 1
         else:
-            x++
+            x += 1
 
     if(done):
         last = len(indexSlot) - 1
-        setOfSchedules = traverseIndex(indexSlot[last], x, sched)
+        print("last value: ", indexSlot[last])
+        print("day value: ", x-1)
+        setOfSchedules = traverseIndex(indexSlot[last], x-1, sched)
 
     return setOfSchedules                            
        
@@ -261,7 +362,10 @@ def improveSchedV2(sched):
     #assuming all courses are set on a specific time slot
     #return multiple instances of MainMatrix
 
-
+def printSample(editedSched):
+    for x in range(len(editedSched)):
+        printSched(editedSched[x])
+        
 indexDay = []
 indexSlot = []
 
@@ -274,14 +378,21 @@ schedule = fillSched (courseCode, prof, units)
 
 printSched(schedule)
 
-schedule = improveSched(schedule,1,1)
-
+##schedule = improveSched(schedule,1,1)
 
 printSched(schedule)
 
-improveSched(schedule,1,1)
+##improveSched(schedule,1,1)
 
+start = time.time()
+sample = improveSchedV2(schedule)
+end = time.time()
 
+printSample(sample)
+
+sample = improveSchedV2(schedule)
+printSample(sample)
+print("time elapsed:", end - start)
 
 
 
