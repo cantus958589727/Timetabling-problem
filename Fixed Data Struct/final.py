@@ -469,6 +469,8 @@ schedule = fillSched (courseCode, prof, units)
 
 printSched(schedule)
 
+logSchedule(schedule)
+logScoreSchedule(schedule)
 print("Score: ", mainScoringFunction(schedule))
 ##schedule = improveSched(schedule,1,1)
 
@@ -480,6 +482,8 @@ print("Score: ", mainScoringFunction(schedule))
 sample = improveSchedV2(schedule)
 ##end = time.time()
 
+logMultipleScoreSchedule(sample)
+
 print("Created schedule length: ", len(sample))
 printSample(sample)
 
@@ -487,7 +491,7 @@ sample = improveSchedV2(schedule)
 ##printSample(sample)
 ##print("time elapsed:", end - start)
 
-logMultipleSchedule(sample)
+##logMultipleSchedule(sample)
 logMultipleScoreSchedule(sample)
 
 ##for x in range(0, len(sample)):
