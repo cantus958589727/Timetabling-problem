@@ -12,13 +12,13 @@ ClassRoomList.extend([C1])
 
 TimeSlot_scheduler = TimeSchedule()
 
-List_prof = ['Anish', 'Alain', 'Tessie', 'Courtney', 'Duke', 'Bean']
-Coursecode = ['1111', '2222', '3333', '4444', '5555', '6666']
+List_prof = ['Anish', 'Alain', 'Tessie', 'Courtney', 'Duke', 'Bean', 'kaka']
+Coursecode = ['1111', '2222', '3333', '4444', '5555', '6666', '7777']
 #matrix = TimeSlot_scheduler.fill_sched(Coursecode, List_prof)
 #print(matrix)
 
 
-TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list)
+TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList[0])
 
 #sArray = ['BIOINFO', 'Mr. Anish']
 #TimeSlot_scheduler.random_schedule(ClassRoomList, 'Bean')

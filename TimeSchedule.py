@@ -1,5 +1,4 @@
 # Time scheduling
-from tabulist import*
 
 
 class TimeSchedule(object):
@@ -39,22 +38,52 @@ class TimeSchedule(object):
     # for x in myresult:
     #   print(x)
 
+    def matrix_to_Object(self, schedule, Classroom):
+        # include monday else No monday *** this maybe wrong so will change in the future
+        schedule.insert(0, [])
+        if len(schedule) > 5:
+            schedule.pop()
+            list.append(schedule[0])
+            for x in schedule[0]:
+                Classroom.available_room_set_prof_m(x[1])
+                Classroom.available_room_set_course_m(x[0])
+        # -----------------------------------PLEASE REMEMBER TO FIX THIS------------------------------------------------
+        # if not more than 4 it doesnt include monday ** for now lets just assume that all schedules are aligned by date
+        # tuesday
+        for x in schedule[1]:
+            Classroom.available_room_set_prof_t(x[1])
+            Classroom.available_room_set_course_t(x[0])
+
+        for x in schedule[2]:
+            Classroom.available_room_set_prof_w(x[1])
+            Classroom.available_room_set_course_w(x[0])
+
+        for x in schedule[3]:
+            Classroom.available_room_set_prof_h(x[1])
+            Classroom.available_room_set_course_h(x[0])
+
+        for x in schedule[4]:
+            Classroom.available_room_set_prof_f(x[1])
+            Classroom.available_room_set_course_f(x[0])
 
     # Schedule function
-    def schedule_timetabling(self, courseCode, List_prof, tabulist):
+    def schedule_timetabling(self, courseCode, List_prof, tabulist, Classroom):
+        # matrix
+        schedules = []
         schedules = self.fill_sched(courseCode, List_prof)
-
+        # change it into Object instead of matrix
+        self.matrix_to_Object(schedules, Classroom)
         # -------------------------------Scoring function here------------------------
         #--------------------------------End of Scoring function ---------------------
 
-        if tabulist.checkshort(schedules):
-            tabulist.enqueueShort(schedules)
+        if tabulist.checkshort(Classroom):
+            tabulist.enqueueShort(Classroom)
         # -------------------------------Long term stuff-------------------------------
             #-----------------------Checking-------------------
 
             #---------------------End---------------------------
-        if tabulist.checkLong(schedules):
-            tabulist.enqueueLong(schedules)
+        if tabulist.checkLong(Classroom):
+            tabulist.enqueueLong(Classroom)
         #--------------------------------End Long term stuff-------------------------
 
         tabulist.print_all()
@@ -105,9 +134,6 @@ class TimeSchedule(object):
         for x in range(0, numOfSetCourses):
             courseCode.pop(0)
             List_prof.pop(0)
-
-        print(len(List_prof))
-        print(len(courseCode))
         ##    for x in range(0 , len(matrix)/2):
         ##        for y in range(x*5, x+5):
         ##            subMatrix.append(matrix[y])
