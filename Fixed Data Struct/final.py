@@ -82,11 +82,11 @@ def getRoomsFromDB():
 
 def classifyRooms(rooms):
     i = 0
-    while(i < len(rooms):
+    while(i < len(rooms)):
           if(rooms[i][0] == "lab"):
-              
+              pass
           elif(rooms[i][0] == "room"):
-
+              pass
       
 def getCleanOneTuple(data):
     rawData = data
@@ -365,6 +365,7 @@ def improveSchedV2(sched):
         else:
             x += 1
 
+
     if(done):
         last = len(indexSlot) - 1
         print("last value: ", indexSlot[last])
@@ -376,7 +377,98 @@ def improveSchedV2(sched):
     #move scheds multiple times
     #assuming all courses are set on a specific time slot
     #return multiple instances of MainMatrix
+def prepareSched(labs, lec):
+    scheduleMatrix = []
+    
+    for x in range(0, len(labs)):
+        emptycontainer = []
+        #get room number and append the schedule array
+        container = [labs[x]]
+        container.append(emptycontainer)
+        scheduleMatrix.append(container)
 
+    for x in range(0, len(lec)):
+        emptycontainer = []
+        #get room number and append the schedule array
+        container = [lec[x]]
+        container.append(emptycontainer)
+        scheduleMatrix.append(container)
+
+    return scheduleMatrix
+
+#preparedsched contains label for room (room num)
+#coursecombination is the combination of course, professor and room_ype
+
+def fillPrepareSched(preparedSched, coursecombination, ):
+    #matrix = per time
+    #subMatrix = per day
+    #mainMatrix = per classroom
+    #process:
+    #create sched per time
+    #create sched per day
+    #create sched per class
+    
+    subMatrix = []
+    mainMatrix = []
+    copyMatrix = []
+    numOfSetCourses = 0
+    #for now
+    if(len(courseCode) != len(prof)):
+        return preparedSched
+
+    for x in range(0, len(courseCode)):
+        container = [courseCode[x], prof[x]]
+        if(len(subMatrix) < 6):
+            subMatrix.append(container)
+        else:
+##            copyMatrix.append(subMatrix)
+            mainMatrix.append(subMatrix)
+            numOfSetCourses += len(subMatrix)
+            subMatrix = []
+            subMatrix.append(container)
+            
+    if(len(subMatrix) != 0):
+        numOfSetCourses += len(subMatrix)
+        emptyMatrix = ["", ""]
+        while(len(subMatrix) < 6):
+            subMatrix.append(emptyMatrix)
+        mainMatrix.append(subMatrix)
+        
+        subMatrix = []
+
+    for x in range(0, len(courseCode)):
+        #based in the constraints, hours / units will be set as a condition here
+        #to determine whether to add it to a thursday, friday or saturday sched
+        container = [courseCode[x], prof[x]]
+##        matrix = []
+##        matrix.append(container)
+        if(len(subMatrix) < 6):
+            subMatrix.append(container)
+        else:
+##            copyMatrix.append(subMatrix)
+            mainMatrix.append(subMatrix)
+            subMatrix = []
+            subMatrix.append(container)
+            
+    if(len(subMatrix) != 0):
+        emptyMatrix = ["", ""]
+        while(len(subMatrix) < 6):
+            subMatrix.append(emptyMatrix)
+        mainMatrix.append(subMatrix)
+
+    #Assuming it goes through the list top to bottom
+    for x in range(0, numOfSetCourses):
+        courseCode.pop(0)
+        prof.pop(0)
+
+    print(len(prof))
+    print(len(courseCode))
+##    for x in range(0 , len(matrix)/2):
+##        for y in range(x*5, x+5):
+##            subMatrix.append(matrix[y])
+
+    
+    return mainMatrix
 def gapYScoring(sched, score):
     for x in range(0, len(sched)):
         tempScore = 1
@@ -473,6 +565,11 @@ def logMultipleScoreSchedule(sched):
 indexDay = []
 indexSlot = []
 
+lec = ["G201", "G202", "G203", "G204"]
+labs = ["G301", "G302", "G303", "G304"]
+sampleSchedulePrep = prepareSched(labs, lec)
+
+print(sampleSchedulePrep)
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 prof = getCleanOneTuple(getProfFromDB())
