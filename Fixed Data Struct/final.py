@@ -12,7 +12,7 @@ def isCourseSet():
     pass
     #pass the sched you want to improve and n is the number of course or slot
     #to be edited
-    # if 
+    # if
 def improveSched(sched, n, slots):
     if(len(courseCode) == 0):
         for x in range(0, len(sched)-1):
@@ -75,6 +75,19 @@ def getUnitsFromDB():
 
     return myresult
 
+def getRoomsFromDB():
+    #get room type
+    #get from gokongwei bldg
+    pass
+
+def classifyRooms(rooms):
+    i = 0
+    while(i < len(rooms):
+          if(rooms[i][0] == "lab"):
+              
+          elif(rooms[i][0] == "room"):
+
+      
 def getCleanOneTuple(data):
     rawData = data
     cleanData = []
