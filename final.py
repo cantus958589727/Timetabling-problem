@@ -59,7 +59,7 @@ def getCourseIdFromDB():
 
     return myresult
 
-def getUnitsFromDB():
+def getUnitsFromDB(courseID):
     mydb = mysql.connector.connect(
            host = "localhost",
            user = "root",
@@ -69,7 +69,13 @@ def getUnitsFromDB():
 
     mycursor = mydb.cursor()
 
-    mycursor.execute("SELECT units FROM course LIMIT 10")
+    param = ''
+    for x in range(0, len(courseID)):
+        param += "course_id = " + str(courseID[x])
+        if(x < len(courseID)-1):
+           param += ' OR '
+
+    mycursor.execute("SELECT units FROM course WHERE " + param)
 
     myresult = mycursor.fetchall()
 
@@ -96,8 +102,8 @@ def getRoomsFromDB():
 
     myresult = mycursor.fetchall()
 
-    print(classifyRooms(myresult))
-    #return classifyRooms(myresult)
+    #print(classifyRooms(myresult))
+    return classifyRooms(myresult)
     #pass
 
 def classifyRooms(rooms):
@@ -142,7 +148,6 @@ def getCourseCodeFromDB(courseID):
     mycursor.execute("SELECT course_code FROM course WHERE " + param)
     
     myresult = mycursor.fetchall()
-
     return myresult
 
 def getProfFromDB():
@@ -496,14 +501,15 @@ def logMultipleScoreSchedule(sched):
         
     logging.info("End of Multiple Scheduling Score")
 
- 
 indexDay = []
 indexSlot = []
+courseUnits = []
 
+#---courseID = courseCode = units----#
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 prof = getCleanOneTuple(getProfFromDB())
-units = getCleanOneTuple(getUnitsFromDB())
+units = getCleanOneTuple(getUnitsFromDB(courseID))
 
 schedule = fillSched (courseCode, prof, units)
 
