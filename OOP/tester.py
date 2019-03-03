@@ -16,9 +16,18 @@ Labs = DM.InstantiateMultipleClassrooms(classified_rooms[1])
 print(Lecs)
 print(Labs)
 
+labels = []
+schedules = []
+
 ClassRoomList = []
-ClassRoomList.extend(Lecs)
-ClassRoomList.extend(Labs)
+ClassRoomList.append(labels)
+
+ClassRoomList[0].extend(Lecs)
+ClassRoomList[0].extend(Labs)
+
+ClassRoomList.append(schedules)
+
+ClassRoomList = DM.prepareScheduleHolder(ClassRoomList)
 
 print(ClassRoomList)
 
@@ -36,6 +45,10 @@ Coursecode = DBConnect.getCleanOneTuple(Coursecode)
 #matrix = TimeSlot_scheduler.fill_sched(Coursecode, List_prof)
 #print(matrix)
 
+print(List_prof)
+print(Coursecode)
+print(len(ClassRoomList[0]))
+print(len(ClassRoomList[1]))
 
 TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList[0])
 

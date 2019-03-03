@@ -11,3 +11,19 @@ class DataManipulator(object):
             classrooms.append(x)
 
         return classrooms
+
+    def prepareScheduleHolder(self, classroomlist):
+        
+        for x in classroomlist[0]:
+            mainmatrix = []
+            i = 0
+            #instantiates monday - saturday array
+            while(i < 6):
+                i = i + 1
+                submatrix = []
+                mainmatrix.append(submatrix)
+
+            classroomlist[1].append(mainmatrix)
+
+        print(classroomlist)
+        return classroomlist
