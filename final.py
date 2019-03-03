@@ -166,6 +166,33 @@ def getProfFromDB():
 
     return myresult
 
+#-------Professors Course List---------------
+def getProfPrefFromDb(ListOfProf, ListOfAdeptC, ListOfBegC):
+    mydb = mysql.connector.connect(
+           host = "localhost",
+           user = "root",
+           passwd = "mysql11",
+           database = "thesis"
+    )
+    mycursor = mydb.cursor()
+    #ListOfProf = ['CABREDO, RAFAEL', 'CHENG, CHARIBETH', 'CHU, SHIRLEY', 'RIVERA, PAULINE']
+    print(ListOfProf)
+    for x in range(0, len(ListOfProf)):
+        param = "Faculty_ID = \'" + str(ListOfProf[x]) + "\'"
+        #---Check for adept---
+        #SELECT course FROM categories where category in ( Select category from thesis.professors Where name =  AND proficiency = 'Adept');
+        mycursor.execute("SELECT course FROM categories where category in ( Select category from thesis.professors Where " + param + "  AND proficiency = \'Adept\');" )
+        AdeptResult = mycursor.fetchall()
+        CleanAdeptResult = getCleanOneTuple(AdeptResult)
+        ListOfAdeptC.append(CleanAdeptResult)
+
+        #--Get Beginner Courses--
+        mycursor.execute("SELECT course FROM categories where category in ( Select category from thesis.professors Where " + param + "  AND proficiency = \'Beginner\');")
+        BeginnerResult = mycursor.fetchall()
+        CleanBeginnerResult = getCleanOneTuple(BeginnerResult)
+        ListOfBegC.append(CleanBeginnerResult)
+
+
 #make a list of unset courses and prof
 def printSched(schedule):
     for x in range(0, len(schedule)):
@@ -504,11 +531,22 @@ def logMultipleScoreSchedule(sched):
 indexDay = []
 indexSlot = []
 courseUnits = []
+ListOfAdeptC = []
+ListOfBegC = []
+
+prof = getCleanOneTuple(getProfFromDB())
+getProfPrefFromDb(prof, ListOfAdeptC, ListOfBegC)
+#print(ListOfAdeptC)
+##print(ListOfBegC)
+#print(len(ListOfAdeptC))
+#print(len(ListOfBegC))
+
+
 
 #---courseID = courseCode = units----#
 courseID = getCleanOneTuple(getCourseIdFromDB())
 courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
-prof = getCleanOneTuple(getProfFromDB())
+#prof = getCleanOneTuple(getProfFromDB())
 units = getCleanOneTuple(getUnitsFromDB(courseID))
 
 schedule = fillSched (courseCode, prof, units)
