@@ -41,23 +41,37 @@ def improveSched(sched, n, slots):
             #printSched(sched)
             return sched
             
-            
 
-def getCourseIdFromDB():
+def getCourseIdFromDB(year, term):
     mydb = mysql.connector.connect(
-           host = "localhost",
-           user = "root",
-           passwd = "mysql11",
-           database = "thesis"
+            host = "localhost",
+            user = "root",
+            passwd = "1234",
+            database = "thesis"
     )
-
     mycursor = mydb.cursor()
-
-    mycursor.execute("SELECT course_id FROM course LIMIT 10")
-
+    Param = "start_year = " + str(year) + " AND term = " + str(term)
+    #print(Param)
+    # Select course_id from offering where start_year = 2015 AND term = 1;
+    mycursor.execute("Select course_id from offering where " + Param + ";")
     myresult = mycursor.fetchall()
-
     return myresult
+
+#def getCourseIdFromDB():
+#    mydb = mysql.connector.connect(
+#           host = "localhost",
+#           user = "root",
+#           passwd = "mysql11",
+#           database = "thesis"
+#    )
+#
+#    mycursor = mydb.cursor()
+#
+#    mycursor.execute("SELECT course_id FROM course LIMIT 10")
+#
+#    myresult = mycursor.fetchall()
+#
+#    return myresult
 
 def getUnitsFromDB(courseID):
     mydb = mysql.connector.connect(
@@ -132,7 +146,7 @@ def getCourseCodeFromDB(courseID):
     mydb = mysql.connector.connect(
            host = "localhost",
            user = "root",
-           passwd = "mysql11",
+           passwd = "1234",
            database = "thesis"
     )
 
@@ -150,33 +164,52 @@ def getCourseCodeFromDB(courseID):
     myresult = mycursor.fetchall()
     return myresult
 
-def getProfFromDB():
+def getProfFromDB(courseCode):
     mydb = mysql.connector.connect(
            host = "localhost",
            user = "root",
-           passwd = "mysql11",
+           passwd = "1234",
            database = "thesis"
     )
-
     mycursor = mydb.cursor()
-
-    mycursor.execute("SELECT user_id FROM faculty LIMIT 10")
+    param = ''
+    for x in range(0, len(courseCode)):
+        param += "course = \"" + str(courseCode[x]) + "\""
+        if(x < len(courseCode)-1):
+           param += ' OR '
+    # SELECT Faculty_ID FROM thesis.professors where category = ( select category from categories where course = "COMPRO1");
+    mycursor.execute("SELECT Faculty_ID FROM thesis.professors where category in( select category from categories where " + param + ");")
 
     myresult = mycursor.fetchall()
-
     return myresult
+
+#def getProfFromDB():
+#    mydb = mysql.connector.connect(
+#           host = "localhost",
+#           user = "root",
+#           passwd = "1234",
+#           database = "thesis"
+#    )
+#
+#    mycursor = mydb.cursor()
+#
+#    mycursor.execute("SELECT user_id FROM faculty LIMIT 10")
+#
+#    myresult = mycursor.fetchall()
+#
+#    return myresult
 
 #-------Professors Course List---------------
 def getProfPrefFromDb(ListOfProf, ListOfAdeptC, ListOfBegC):
     mydb = mysql.connector.connect(
            host = "localhost",
            user = "root",
-           passwd = "mysql11",
+           passwd = "1234",
            database = "thesis"
     )
     mycursor = mydb.cursor()
     #ListOfProf = ['CABREDO, RAFAEL', 'CHENG, CHARIBETH', 'CHU, SHIRLEY', 'RIVERA, PAULINE']
-    print(ListOfProf)
+    #print(ListOfProf)
     for x in range(0, len(ListOfProf)):
         param = "Faculty_ID = \'" + str(ListOfProf[x]) + "\'"
         #---Check for adept---
@@ -528,25 +561,47 @@ def logMultipleScoreSchedule(sched):
         
     logging.info("End of Multiple Scheduling Score")
 
+def Arrange(prof, ListOfAdeptC, ListOfBegC, courseCode):
+    CourseTable = [[] for x in range(0, len(courseCode)) ]
+    for x in range(0, len(courseCode)):
+        for y in range(0, len(ListOfAdeptC)):
+            if courseCode[x] in ListOfAdeptC[y]:
+                CourseTable[x].append(prof[y])
+        if len(CourseTable[x]) == 0:
+            for y in range(0, len(ListOfBegC)):
+                if courseCode[x] in ListOfBegC[y]:
+                    CourseTable[x].append(prof[y])
+    return CourseTable
+
 indexDay = []
 indexSlot = []
 courseUnits = []
 ListOfAdeptC = []
 ListOfBegC = []
 
-prof = getCleanOneTuple(getProfFromDB())
+courseID = getCleanOneTuple(getCourseIdFromDB(2015, 1))
+courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
+#print(courseID)
+prof = getCleanOneTuple(getProfFromDB(courseCode))
 getProfPrefFromDb(prof, ListOfAdeptC, ListOfBegC)
 #print(ListOfAdeptC)
-##print(ListOfBegC)
-#print(len(ListOfAdeptC))
-#print(len(ListOfBegC))
+Table = Arrange(prof, ListOfAdeptC, ListOfBegC, courseCode)
+for x in range(0, len(courseCode)):
+    print("Course " + str(x) + " : " + str(courseCode[x]) )
+    print(Table[x])
+for x in range(0, len(prof)):
+    if prof[x] not in Table[]:
+        print(prof[x])
+
 
 
 
 #---courseID = courseCode = units----#
-courseID = getCleanOneTuple(getCourseIdFromDB())
-courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
+#courseID = getCleanOneTuple(getCourseIdFromDB())
+#courseCode = getCleanOneTuple(getCourseCodeFromDB(courseID))
 #prof = getCleanOneTuple(getProfFromDB())
+#getProfPrefFromDb(prof, ListOfAdeptC, ListOfBegC)
+#print(ListOfAdeptC)
 units = getCleanOneTuple(getUnitsFromDB(courseID))
 
 schedule = fillSched (courseCode, prof, units)
