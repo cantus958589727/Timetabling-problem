@@ -33,6 +33,8 @@ print(ClassRoomList)
 
 TimeSlot_scheduler = TimeSchedule()
 
+ListOfAdeptC = []
+ListOfBegC = []
 
 course_id = DBConnect.getCourseIdFromDB()
 course_id = DBConnect.getCleanOneTuple(course_id)
@@ -42,6 +44,11 @@ List_prof = DBConnect.getCleanOneTuple(List_prof)
 
 Coursecode = DBConnect.getCourseCodeFromDB(course_id)
 Coursecode = DBConnect.getCleanOneTuple(Coursecode)
+
+DBConnect.getProfPrefFromDb(List_prof, ListOfAdeptC, ListOfBegC)
+
+print(ListOfAdeptC)
+print(ListOfBegC)
 #matrix = TimeSlot_scheduler.fill_sched(Coursecode, List_prof)
 #print(matrix)
 

@@ -99,4 +99,23 @@ class DBconnect(object):
         return self.classifyRooms(myresult)
         #pass
 
-    
+    def getProfPrefFromDb(self, ListOfProf, ListOfAdeptC, ListOfBegC):
+        
+        mycursor = self.mydb.cursor()
+        #ListOfProf = ['CABREDO, RAFAEL', 'CHENG, CHARIBETH', 'CHU, SHIRLEY', 'RIVERA, PAULINE']
+        #print(ListOfProf)
+        for x in range(0, len(ListOfProf)):
+            param = "Faculty_ID = \'" + str(ListOfProf[x]) + "\'"
+            #---Check for adept---
+            #SELECT course FROM categories where category in ( Select category from thesis.professors Where name =  AND proficiency = 'Adept');
+            mycursor.execute("SELECT course FROM categories where category in ( Select category from thesis.professors Where " + param + "  AND proficiency = \'Adept\');" )
+            AdeptResult = mycursor.fetchall()
+            CleanAdeptResult = self.getCleanOneTuple(AdeptResult)
+            ListOfAdeptC.append(CleanAdeptResult)
+
+            #--Get Beginner Courses--
+            mycursor.execute("SELECT course FROM categories where category in ( Select category from thesis.professors Where " + param + "  AND proficiency = \'Beginner\');")
+            BeginnerResult = mycursor.fetchall()
+            CleanBeginnerResult = self.getCleanOneTuple(BeginnerResult)
+            ListOfBegC.append(CleanBeginnerResult)
+        
