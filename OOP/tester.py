@@ -3,6 +3,12 @@ from TimeSchedule import*
 from tabulist import*
 from DBconnect import*
 from DataManipulator import*
+from GUI import *
+
+print("START")
+#[ Department, Term, Year ]
+UserInput = []
+frame = GUI(UserInput)
 
 tabu_list = tabulist()
 DBConnect = DBconnect()
@@ -36,14 +42,16 @@ TimeSlot_scheduler = TimeSchedule()
 ListOfAdeptC = []
 ListOfBegC = []
 
-course_id = DBConnect.getCourseIdFromDB()
+course_id = DBConnect.getCourseIdFromDB(UserInput[2], UserInput[1])
 course_id = DBConnect.getCleanOneTuple(course_id)
-
-List_prof = DBConnect.getProfFromDB()
-List_prof = DBConnect.getCleanOneTuple(List_prof)
+print("course_id : ")
+print(course_id)
 
 Coursecode = DBConnect.getCourseCodeFromDB(course_id)
 Coursecode = DBConnect.getCleanOneTuple(Coursecode)
+
+List_prof = DBConnect.getProfFromDB(Coursecode)
+List_prof = DBConnect.getCleanOneTuple(List_prof)
 
 DBConnect.getProfPrefFromDb(List_prof, ListOfAdeptC, ListOfBegC)
 

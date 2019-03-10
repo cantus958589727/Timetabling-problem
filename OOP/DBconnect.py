@@ -6,7 +6,7 @@ class DBconnect(object):
         self.mydb = mysql.connector.connect(
                host = "localhost",
                user = "root",
-               passwd = "mysql11",
+               passwd = "1234",
                database = "thesis"
         )
 
@@ -19,7 +19,6 @@ class DBconnect(object):
         return cleanData
 
     def getCourseCodeFromDB(self, courseID):
-        
         mycursor = self.mydb.cursor()
 
         param = ''
@@ -27,33 +26,59 @@ class DBconnect(object):
             param += "course_id = " + str(courseID[x])
             if(x < len(courseID)-1):
                param += ' OR '
-
-    ##    print(param)
+        print("END")
         mycursor.execute("SELECT course_code FROM course WHERE " + param)
         
         myresult = mycursor.fetchall()
 
         return myresult
 
-    def getProfFromDB(self):
-
+    def getProfFromDB(self, courseCode):
         mycursor = self.mydb.cursor()
-
-        mycursor.execute("SELECT user_id FROM faculty LIMIT 10")
+    
+        param = ''
+        for x in range(0, len(courseCode)):
+            param += "course = \"" + str(courseCode[x]) + "\""
+            if(x < len(courseCode)-1):
+               param += ' OR '
+    
+        mycursor.execute("SELECT Faculty_ID FROM thesis.professors where category in( select category from categories where " + param + ");")
 
         myresult = mycursor.fetchall()
-
+    
         return myresult
 
-    def getCourseIdFromDB(self):
+##    def getProfFromDB(self):
+##
+##        mycursor = self.mydb.cursor()
+##
+##        mycursor.execute("SELECT user_id FROM faculty LIMIT 10")
+##
+##        myresult = mycursor.fetchall()
+##
+##        return myresult
+    
+    def getCourseIdFromDB(self, year, term):
 
         mycursor = self.mydb.cursor()
-
-        mycursor.execute("SELECT course_id FROM course LIMIT 10")
-
+        
+        Param = "start_year = " + str(year) + " AND term = " + str(term)
+        print(Param)
+        mycursor.execute("Select course_id from offering where " + Param + ";")
+        
         myresult = mycursor.fetchall()
-
+        
         return myresult
+
+##    def getCourseIdFromDB(self):
+##
+##        mycursor = self.mydb.cursor()
+##
+##        mycursor.execute("SELECT course_id FROM course LIMIT 10")
+##
+##        myresult = mycursor.fetchall()
+##
+##        return myresult
 
     def getUnitsFromDB(self):
 
@@ -86,12 +111,15 @@ class DBconnect(object):
         #SELECT thesisschema.building.﻿building_id FROM thesisschema.building where thesisschema.building.building_code = "GK";
         
         mycursor = self.mydb.cursor()
-
-        mycursor.execute("SELECT thesisschema.building.﻿building_id FROM thesisschema.building where thesisschema.building.building_code = \"GK\";")
+        #SELECT thesis.building.﻿building_id FROM thesis.building where thesis.building.building_code = \"GK\";
+        #SELECT thesisschema.building.﻿building_id FROM thesisschema.building where thesisschema.building.building_code = \"GK\";
+        mycursor.execute("SELECT thesis.building.﻿building_id FROM thesis.building where thesis.building.building_code = \"GK\";")
 
         RoomCodeGK = mycursor.fetchall()
 
-        mycursor.execute("SELECT room_code, room_type FROM thesisschema.room Where building_id = " + str(RoomCodeGK[0][0]) + ";")
+        #SELECT room_code, room_type FROM thesisschema.room Where building_id = " + str(RoomCodeGK[0][0]) + ";
+        #SELECT room_code, room_type FROM thesis.room Where building_id = " + str(RoomCodeGK[0][0]) + ";
+        mycursor.execute("SELECT room_code, room_type FROM thesis.room Where building_id = " + str(RoomCodeGK[0][0]) + ";")
 
         myresult = mycursor.fetchall()
 
