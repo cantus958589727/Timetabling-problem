@@ -29,7 +29,10 @@ ClassRoomList = []
 ClassRoomList.append(labels)
 
 ClassRoomList[0].extend(Lecs)
+partition = len(ClassRoomList[0])
+print("partition:", partition)
 ClassRoomList[0].extend(Labs)
+print(ClassRoomList[0][partition])
 
 ClassRoomList.append(schedules)
 
@@ -62,10 +65,10 @@ print(ListOfBegC)
 
 print(List_prof)
 print(Coursecode)
-print(len(ClassRoomList[0]))
+print(ClassRoomList[1][0][0])
 print(len(ClassRoomList[1]))
 
-TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList[0])
+TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList[0], partition)
 
 #sArray = ['BIOINFO', 'Mr. Anish']
 #TimeSlot_scheduler.random_schedule(ClassRoomList, 'Bean')

@@ -590,7 +590,7 @@ for x in range(0, len(courseCode)):
     print("Course " + str(x) + " : " + str(courseCode[x]) )
     print(Table[x])
 for x in range(0, len(prof)):
-    if prof[x] not in Table[]:
+    if prof[x] not in Table:
         print(prof[x])
 
 
