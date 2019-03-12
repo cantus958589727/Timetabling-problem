@@ -6,7 +6,7 @@ class DBconnect(object):
         self.mydb = mysql.connector.connect(
                host = "localhost",
                user = "root",
-               passwd = "mysql11",
+               passwd = "1234",
                database = "thesis"
         )
 
@@ -156,7 +156,7 @@ class DBconnect(object):
             if len(CourseTable[x]) == 0:
                 for y in range(0, len(ListOfBegC)):
                     if courseCode[x] in ListOfBegC[y]:
-                        CourseTable[x].append(prof[y])
-                    
+						CourseTable[x].append(prof[y])
+						
         return CourseTable
         
