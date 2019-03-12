@@ -1,4 +1,5 @@
 from Classroom import*
+import random
 
 class DataManipulator(object):
 
@@ -27,3 +28,15 @@ class DataManipulator(object):
 
         print(classroomlist)
         return classroomlist
+
+    def testClassroomType(self, courseOffered):
+        classType = ["Lecture", "Laboratory"]
+        maincontainer = []
+        for x in courseOffered:
+            container = []
+            container.append(x)
+            container.append(random.choice(classType))
+            maincontainer.append(container)
+
+        return maincontainer
+            

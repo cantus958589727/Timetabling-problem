@@ -67,10 +67,12 @@ class TimeSchedule(object):
             Classroom.available_room_set_course_f(x[0])
 
     # Schedule function
-    def schedule_timetabling(self, courseCode, List_prof, tabulist, Classroom, partition):
+    def schedule_timetabling(self, courseCode, List_prof, tabulist, Classroom, partition, combination):
         # matrix
         schedules = []
-        schedules = self.fill_sched(courseCode, List_prof)
+##        schedules = self.fill_sched(courseCode, List_prof, Classroom, partition, combination)
+        schedules = self.fill_schedv2(courseCode, combination, Classroom, partition)
+        self.printschedule(schedules)
         # change it into Object instead of matrix
         self.matrix_to_Object(schedules, Classroom)
         # -------------------------------Scoring function here------------------------
@@ -103,38 +105,137 @@ class TimeSchedule(object):
     
 ##    return randomizedIndices
 
+    def printschedule(self, sched):
+        print("Schedule:")
+        for x in range(0, len(sched[1])):
+            print("Room %s:" % sched[0][x])
+            for y in range(0, len(sched[1][x])):
+                print("Day %d:" % y)
+                print(sched[1][x][y])
+                
     def count_room(self, room):
+        if(len(room) == 0):
+            print("wow")
         counter = 0
-        for x in room:
-            counter = counter + len(x)
-
+        for y in room[1]:
+            for z in room[3]:
+                if(y == z):
+                    counter = counter + 1
+                else:
+                    counter = counter + 2
+        for y in room[2]:
+            for z in room[4]:
+                if(y == z):
+                    counter = counter + 1
+                else:
+                    counter = counter + 2
+                    
         return counter
 
+    def isDayEqual(self, day1, day2):
+        if(day1 == day2):
+            return True
+        else:
+            return False
+        
     def choose_day(self, room):
+        ## assuming subjects are fixed twice a week with one day interval
         chosenindex = 0
-        for x in (1, len(room)):
-            if(len(room[chosenindex]) < len(room[x])):
+        chosenindex2 = 0
+        for x in range(1, 3):
+            print("choosing day..")
+            print(x)
+            #check TH and WF
+            if(chosenindex != 0):
+                if(len(room[x]) == len(room[x+2])):
+                    if(self.isDayEqual(room[x], room[x+2])):
+                        chosenindex2 = x
+                else:
+                    if(len(room[x]) > len(room[x+2])):
+                        chosenindex2 = x
+                    else:
+                        chosenindex2 = x
+  
+                           
+            elif(len(room[x]) == len(room[x+2])):
+                if(self.isDayEqual(room[x], room[x+2])):
+                    chosenindex = x
+                else:
+                    if(len(room[x]) > len(room[x+2])):
+                        chosenindex = x
+                    else:
+                        chosenindex = x
+            else:
                 chosenindex = x
                 
-        return chosenindex
+        if(chosenindex != 0):
+            if(chosenindex2 != 0):
+                if(len(room[chosenindex]) > len(room[chosenindex2])):
+                    print("returning", chosenindex2)
+                    return chosenindex2
+                else:
+                    print("returning", chosenindex)
+                    return chosenindex
+            else:
+                print("returning", chosenindex)
+                return chosenindex
+        else:
+            print("returning 1")
+            return 1
 
-    def insert_course(self, courseCombination, sched, targetroom, targetday):
-        pass
+    def insert_course(self, prof, sched, targetroom, targetday):
+        ## follows TH and WF rules
+        ## traverse all rooms
+        
+        allow = 1
+        print(targetroom)
+        print(targetday)
+        print(sched[1])
+##        print(sched[targetroom][targetday])
+        if sched[1][targetroom][targetday] is None:
+            targetTime = 0
+        else:
+            targetTime = len(sched[1][targetroom][targetday])
+            
+        for x in range(0, len(sched[1])):
+            ## traverse specific rooms
+            for y in range(1,3):
+                
+                ## check all timeslot in all rooms
+                if sched[1][x][y] is None:
+                    print("none")
+                    pass
+                elif(targetTime < len(sched[1][x][y])):
+                    print(sched[1][x][y])
+                    if sched[1][x][y][targetTime] is None:
+                        pass
+                    elif(sched[1][x][y][targetTime][1] == prof):
+                        allow = 0
+                        break
+
+        if(allow):
+            print("true")
+            return True
+        else:
+            print("false")
+            return False
+                           
+                            
+                
 ## this function checks if the course is in conflict with the same time and the same prof with other rooms
 ## returns a true/false value
 
-    def getSpecificCourseList(self, cCombinations, coursename):
+    def getSpecificCourseList(self, cCombinations, coursename, coursecodes):
 ## this function gets the combination of a specific list of a specific coursecode
 ## call chooseRandomCourseCombi
 ## returns a list of specificCourseCombinationList
         specificList = []
-        for x in range(0, len(cCombinations)):
-            current = cCombinations[x][0] ## access the coursename cCombinations[x][0] is not final
-            if(current == coursename):
+        for x in range(0, len(coursecodes)): ## access the coursename cCombinations[x][0] is not final
+            if(coursecodes[x][0] == coursename):
                 specificList = cCombinations[x]
                 random.shuffle(specificList)
                 break
-
+        print("In get specificlist function", specificList)
         return specificList
         
     def fill_schedv2(self, courseOffered, cCombinations, sched, partition):
@@ -149,117 +250,251 @@ class TimeSchedule(object):
 ##       therefore: sched[0][n] == sched[1][n]
         
         for currentCourse in range(0, len(courseOffered)):
-            
+            print("currentCourse", courseOffered[currentCourse])
+            room = 0
             insertflag = 0
             courseCountPrevious = 0
+            approvedcombi = []
             ## room = per room
             
             ## assuming currentCourse[0][0] is type of room
             ## lecture rooms
-            if(currentCourse[0][0] == "Lecture"):
-                for room in range(0, partition)):
+            if(courseOffered[currentCourse][1] == "Lecture"):
+                print("is lec")
+                for room in range(0, partition):
+                    print("room num:", room)
                     ##if course inserted successfully, stop searching for available rooms
                     if(insertflag == 1):
                         break
                     ##if current room has no course, insert
-                    elif(count_room(sched[1][room]) == 0):
+                    elif sched[1][room] is None:
                         chosen_day = self.choose_day(sched[1][room])
-                        randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
-                        for i in randSpecificList :
-                            if(insert_course(i, sched, room, chosen_day)):
-                                insertflag = 1
-                                sched[1][room][chosen_day].append(i)
+                        randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
+                        if(len(randSpecificList) == 0):
+                            approvedcombi.append(courseOffered[currentCourse][0])
+                            approvedcombi.append(" ")
+                            insertflag = 1
+                            sched[1][room][chosen_day].append(approvedcombi)
+                            sched[1][room][chosen_day+2].append(approvedcombi)
+                            
+                        else:
+                            for i in randSpecificList :
+                                if(self.insert_course(i, sched, room, chosen_day)):
+                                    approvedcombi.append(courseOffered[currentCourse][0])
+                                    approvedcombi.append(i)
+                                    insertflag = 1
+                                    sched[1][room][chosen_day].append(approvedcombi)
+                                    sched[1][room][chosen_day+2].append(approvedcombi)
+                                    break
                                 
                         if(insertflag != 1):
+                            print(chosen_day, "chosen")
+                            print("room", sched[1][room])
+##                            print(randSpecificList)
+##                            print(randSpecificList[len(randSpecificList)-1])
                             ##if last class still conflict, insert
-                            sched[1][room][chosen_day].append(randSpecificList[len(randSpecificList)])
+                            if(len(randSpecificList) == 0):
+                                approvedcombi.append(courseOffered[currentCourse][0])
+                                approvedcombi.append(" ")
+                                insertflag = 1
+                                sched[1][room][chosen_day].append(approvedcombi)
+                                sched[1][room][chosen_day+2].append(approvedcombi)
+                            
+                            else:
+                                for i in randSpecificList :
+                                    if(self.insert_course(i, sched, room, chosen_day)):
+                                        approvedcombi.append(courseOffered[currentCourse][0])
+                                        approvedcombi.append(i)
+                                        insertflag = 1
+                                        sched[1][room][chosen_day].append(approvedcombi)
+                                        sched[1][room][chosen_day+2].append(approvedcombi)
+                                        break
                     ##if previous room has course
                     elif(courseCountPrevious != 0):
                         ## if previous room has greater course count, then insert 
-                        if(courseCountPrevious > count_room(sched[1][room])):
+                        if(courseCountPrevious > self.count_room(sched[1][room])):
                             chosen_day = self.choose_day(sched[1][room])
-                            randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
+                            randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
                             for i in randSpecificList :
-                                if(insert_course(i, sched)):
+                                if(self.insert_course(i, sched, room, chosen_day)):
+                                    approvedcombi.append(courseOffered[currentCourse][0])
+                                    approvedcombi.append(i)
                                     insertflag = 1
-                                    sched[1][room][chosen_day].append(i)
+                                    sched[1][room][chosen_day].append(approvedcombi)
+                                    sched[1][room][chosen_day+2].append(approvedcombi)
+                                    break
                                     
                             if(insertflag != 1):
+                                randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
                                 ##if last class still conflict, insert
-                                sched[1][room][chosen_day].append(randSpecificList[len(randSpecificList)])
+                                print(chosen_day, "chosen")
+                                print("room", sched[1][room])
+##                                print(randSpecificList)
+##                                print(randSpecificList[len(randSpecificList)-1])
+##                                sched[1][room][chosen_day].append(randSpecificList[len(randSpecificList)-1])
+                                if(len(randSpecificList) == 0):
+                                    approvedcombi.append(courseOffered[currentCourse][0])
+                                    approvedcombi.append(" ")
+                                    insertflag = 1
+                                    sched[1][room][chosen_day].append(approvedcombi)
+                                    sched[1][room][chosen_day+2].append(approvedcombi)
+                            
+                                else:
+                                    for i in randSpecificList :
+                                        if(self.insert_course(i, sched, room, chosen_day)):
+                                            approvedcombi.append(courseOffered[currentCourse][0])
+                                            approvedcombi.append(i)
+                                            insertflag = 1
+                                            sched[1][room][chosen_day].append(approvedcombi)
+                                            sched[1][room][chosen_day+2].append(approvedcombi)
+                                            break
                         ## if previous room has less than or equal the current, move to the next room
                         else:
-                            courseCountPrevious = count_room(sched[1][room])
+                            courseCountPrevious = self.count_room(sched[1][room])
                             
                     ##if previous room is not 0
                     else:
-                        courseCountPrevious = count_room(sched[1][room])
+                        courseCountPrevious = self.count_room(sched[1][room])
                     #roomlec loop ends here
                         
                 ## if not inserted, insert it at first lec room
                 if(insertflag != 1):
                     chosen_day = self.choose_day(sched[1][0])
-                    randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
-                for i in randSpecificList :
-                    if(insert_course(i, sched)):
-                        insertflag = 1
-                        sched[1][0][chosen_day].append(i)
+                    randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
+                    for i in randSpecificList :
+                        if(self.insert_course(i, sched, room, chosen_day)):
+                            approvedcombi.append(courseOffered[currentCourse][0])
+                            approvedcombi.append(i)
+                            insertflag = 1
+                            sched[1][0][chosen_day].append(approvedcombi)
+                            sched[1][0][chosen_day+2].append(approvedcombi)
+                            break
                 #lecture if statement ends here
                         
-            elif(currentCourse[0][0] == "Laboratory"):
+            elif(courseOffered[currentCourse][1] == "Laboratory"):
                 #room lab loop
-                for room in range(partition, len(sched)):
+                print("is lab")
+                print("test")
+                for room in range(partition, len(sched[1])):
+                    print("room num:", room)
                     ##if course inserted successfully, stop searching for available rooms
                     if(insertflag == 1):
                         break
                     ##if current room has no course, insert
-                    elif(count_room(sched[1][room]) == 0):
+                    elif sched[1][room] is None:
                         chosen_day = self.choose_day(sched[1][room])
-                        randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
+                        randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
                         for i in randSpecificList :
-                            if(insert_course(i, sched)):
+                            if(self.insert_course(i, sched, room, chosen_day)):
+                                approvedcombi.append(courseOffered[currentCourse][0])
+                                approvedcombi.append(i)
                                 insertflag = 1
-                                sched[1][room][chosen_day].append(i)
+                                sched[1][room][chosen_day].append(approvedcombi)
+                                sched[1][room][chosen_day+2].append(approvedcombi)
+                                break
 
                         if(insertflag != 1):
+                            print(chosen_day, "chosen")
+                            print("room", sched[1][room])
+##                            print(randSpecificList)
+##                            print(randSpecificList[len(randSpecificList)-1])
                             ##if last class still conflict, insert
-                            sched[1][room][chosen_day].append(randSpecificList[len(randSpecificList)])
+                            if(len(randSpecificList) == 0):
+                                approvedcombi.append(courseOffered[currentCourse][0])
+                                approvedcombi.append(" ")
+                                insertflag = 1
+                                sched[1][room][chosen_day].append(approvedcombi)
+                                sched[1][room][chosen_day+2].append(approvedcombi)
+                            
+                            else:
+                                for i in randSpecificList :
+                                    if(self.insert_course(i, sched, room, chosen_day)):
+                                        approvedcombi.append(courseOffered[currentCourse][0])
+                                        approvedcombi.append(i)
+                                        insertflag = 1
+                                        sched[1][room][chosen_day].append(approvedcombi)
+                                        sched[1][room][chosen_day+2].append(approvedcombi)
+                                        break
+                                    
                     ##if previous room has course
                     elif(courseCountPrevious != 0):
                         ## if previous room has greater course count, then insert 
-                        if(courseCountPrevious > count_room(sched[1][room])):
+                        if(courseCountPrevious > self.count_room(sched[1][room])):
                             chosen_day = self.choose_day(sched[1][room])
-                            randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
+                            randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
                             for i in randSpecificList :
-                                if(insert_course(i, sched)):
+                                if(self.insert_course(i, sched, room, chosen_day)):
+                                    approvedcombi.append(courseOffered[currentCourse][0])
+                                    approvedcombi.append(i)
                                     insertflag = 1
-                                    sched[1][room][chosen_day].append(i)
+                                    sched[1][room][chosen_day].append(approvedcombi)
+                                    sched[1][room][chosen_day+2].append(approvedcombi)
+                                    break
                                     
                             if(insertflag != 1):
-                                ##if last class still conflict, insert
-                                sched[1][room][chosen_day].append(randSpecificList[len(randSpecificList)])
+                                print(chosen_day, "chosen")
+                                print("room", sched[1][room])
+##                            print(randSpecificList)
+##                            print(randSpecificList[len(randSpecificList)-1])
+                            ##if last class still conflict, insert
+                                if(len(randSpecificList) == 0):
+                                    approvedcombi.append(courseOffered[currentCourse][0])
+                                    approvedcombi.append(" ")
+                                    insertflag = 1
+                                    sched[1][room][chosen_day].append(approvedcombi)
+                                    sched[1][room][chosen_day+2].append(approvedcombi)
+                                
+                                else:
+                                    for i in randSpecificList :
+                                        if(self.insert_course(i, sched, room, chosen_day)):
+                                            approvedcombi.append(courseOffered[currentCourse][0])
+                                            approvedcombi.append(i)
+                                            insertflag = 1
+                                            sched[1][room][chosen_day].append(approvedcombi)
+                                            sched[1][room][chosen_day+2].append(approvedcombi)
+                                            break
                         ## if previous room has less than or equal the current, move to the next room
                         else:
-                            courseCountPrevious = count_room(sched[1][room])
+                            courseCountPrevious = self.count_room(sched[1][room])
                             
                     ##if previous room is not 0
                     else:
-                        courseCountPrevious = count_room(sched[1][room])
+                        courseCountPrevious = self.count_room(sched[1][room])
                     #roomlab loop ends here
                         
                 ## if not inserted, insert it at first lab room
                 if(insertflag != 1):
-                    chosen_day = self.choose_day(sched[1][parition])
-                    randSpecificList = self.getSpecificCourseList(cCombinations, currentCourse)
-                for i in randSpecificList :
-                    if(insert_course(i, sched)):
+                    print("lab not inserted")
+                    chosen_day = self.choose_day(sched[1][partition])
+                    randSpecificList = self.getSpecificCourseList(cCombinations, courseOffered[currentCourse][0], courseOffered)
+                    print(chosen_day, "chosen")
+                    print("room", sched[1][room])
+##                            print(randSpecificList)
+##                            print(randSpecificList[len(randSpecificList)-1])
+                    ##if last class still conflict, insert
+                    if(len(randSpecificList) == 0):
+                        approvedcombi.append(courseOffered[currentCourse][0])
+                        approvedcombi.append(" ")
                         insertflag = 1
-                        sched[1][parition][chosen_day].append(i)
+                        sched[1][room][chosen_day].append(approvedcombi)
+                        sched[1][room][chosen_day+2].append(approvedcombi)
+                            
+                    else:
+                        for i in randSpecificList :
+                            if(self.insert_course(i, sched, room, chosen_day)):
+                                approvedcombi.append(courseOffered[currentCourse][0])
+                                approvedcombi.append(i)
+                                insertflag = 1
+                                sched[1][room][chosen_day].append(approvedcombi)
+                                sched[1][room][chosen_day+2].append(approvedcombi)
+                                break
                 #laboratory if statement ends here
                     
             #currentcourseloop continues here
                 
             #currentcourseloop ends here
+                       
+        return sched
         #end of fill_schedv2
                     
     def fill_sched(self, courseCode, List_prof):

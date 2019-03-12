@@ -146,4 +146,17 @@ class DBconnect(object):
             BeginnerResult = mycursor.fetchall()
             CleanBeginnerResult = self.getCleanOneTuple(BeginnerResult)
             ListOfBegC.append(CleanBeginnerResult)
+
+    def Arrange(self, prof, ListOfAdeptC, ListOfBegC, courseCode):
+        CourseTable = [[] for x in range(0, len(courseCode)) ]
+        for x in range(0, len(courseCode)):
+            for y in range(0, len(ListOfAdeptC)):
+                if courseCode[x] in ListOfAdeptC[y]:
+                    CourseTable[x].append(prof[y])
+            if len(CourseTable[x]) == 0:
+                for y in range(0, len(ListOfBegC)):
+                    if courseCode[x] in ListOfBegC[y]:
+                        CourseTable[x].append(prof[y])
+                    
+        return CourseTable
         

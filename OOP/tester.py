@@ -57,18 +57,25 @@ List_prof = DBConnect.getProfFromDB(Coursecode)
 List_prof = DBConnect.getCleanOneTuple(List_prof)
 
 DBConnect.getProfPrefFromDb(List_prof, ListOfAdeptC, ListOfBegC)
+combination = DBConnect.Arrange(List_prof, ListOfAdeptC, ListOfBegC, Coursecode)
+for x in range(0, len(Coursecode)):
+    print("Course " + str(x) + " : " + str(Coursecode[x]) )
+    print(combination[x])
+    
 
-print(ListOfAdeptC)
-print(ListOfBegC)
+
+##print(ListOfAdeptC)
+##print(ListOfBegC)
 #matrix = TimeSlot_scheduler.fill_sched(Coursecode, List_prof)
 #print(matrix)
 
-print(List_prof)
+##print(List_prof)
+##print(Coursecode)
+##print(ClassRoomList[1][0][0])
+##print(len(ClassRoomList[1]))
+Coursecode = DM.testClassroomType(Coursecode)
 print(Coursecode)
-print(ClassRoomList[1][0][0])
-print(len(ClassRoomList[1]))
-
-TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList[0], partition)
+TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList, partition, combination)
 
 #sArray = ['BIOINFO', 'Mr. Anish']
 #TimeSlot_scheduler.random_schedule(ClassRoomList, 'Bean')
