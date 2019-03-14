@@ -80,15 +80,32 @@ class DBconnect(object):
 ##
 ##        return myresult
 
-    def getUnitsFromDB(self):
+    def getUnitsFromDB(courseID):
 
         mycursor = self.mydb.cursor()
 
-        mycursor.execute("SELECT units FROM course LIMIT 10")
+        param = ''
+        for x in range(0, len(courseID)):
+            param += "course_id = " + str(courseID[x])
+            if(x < len(courseID)-1):
+               param += ' OR '
+
+        mycursor.execute("SELECT units FROM course WHERE " + param)
 
         myresult = mycursor.fetchall()
 
         return myresult
+
+
+##    def getUnitsFromDB(self):
+##
+##        mycursor = self.mydb.cursor()
+##
+##        mycursor.execute("SELECT units FROM course LIMIT 10")
+##
+##        myresult = mycursor.fetchall()
+##
+##        return myresult
 
     def classifyRooms(self, rooms):
 ##        print(rooms)
