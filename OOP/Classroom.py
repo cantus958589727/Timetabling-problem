@@ -208,6 +208,7 @@ class Classroom(object):
 
     # display the schedules
     def print_all(self):
+        print("ROOM NUMBER: " + self.__room_number )
         t = PrettyTable(['Time', 'Monday Prof', 'Monday Course', 'Tuesday Prof', ' Tuesday Course ', 'Wednesday Prof',
                          'Wednesday Course', 'Thursday Prof', 'Thursday Course', 'Friday Prof', 'Firday Course'])
         for x in range(0, 6):

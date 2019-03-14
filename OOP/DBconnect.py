@@ -26,7 +26,7 @@ class DBconnect(object):
             param += "course_id = " + str(courseID[x])
             if(x < len(courseID)-1):
                param += ' OR '
-        print("END")
+        #print("END")
         mycursor.execute("SELECT course_code FROM course WHERE " + param)
         
         myresult = mycursor.fetchall()
@@ -63,7 +63,7 @@ class DBconnect(object):
         mycursor = self.mydb.cursor()
         
         Param = "start_year = " + str(year) + " AND term = " + str(term)
-        print(Param)
+        #printParam)
         mycursor.execute("Select course_id from offering where " + Param + ";")
         
         myresult = mycursor.fetchall()
@@ -156,7 +156,7 @@ class DBconnect(object):
             if len(CourseTable[x]) == 0:
                 for y in range(0, len(ListOfBegC)):
                     if courseCode[x] in ListOfBegC[y]:
-						CourseTable[x].append(prof[y])
+                        CourseTable[x].append(prof[y])
 						
         return CourseTable
         

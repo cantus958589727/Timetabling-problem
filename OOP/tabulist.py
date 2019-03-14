@@ -49,7 +49,9 @@ class tabulist:
     def print_all(self):
         print("Short Term")
         for x in self.short:
-            print(x.print_all())
+            for y in x:
+                print(y.print_all())
         print("Long Term")
         for x in self.long:
-            print(x.print_all())
+            for y in x:
+                print(y.print_all())
