@@ -21,16 +21,22 @@ class DBconnect(object):
     def getCourseCodeFromDB(self, courseID):
         mycursor = self.mydb.cursor()
 
-        param = ''
+##        param = ''
+##        for x in range(0, len(courseID)):
+##            param += "course_id = " + str(courseID[x])
+##            if(x < len(courseID)-1):
+##               param += ' OR '
+##        print(param)
+##        input()
+##        mycursor.execute("SELECT course_code FROM course WHERE " + param)
+        myresult = []
         for x in range(0, len(courseID)):
+            param = ' '
             param += "course_id = " + str(courseID[x])
-            if(x < len(courseID)-1):
-               param += ' OR '
-        #print("END")
-        mycursor.execute("SELECT course_code FROM course WHERE " + param)
-        
-        myresult = mycursor.fetchall()
-
+            mycursor.execute("SELECT course_code FROM course WHERE " + param)
+            myresult.append(mycursor.fetchall())
+        print(len(myresult))
+        input("ajshgrf")
         return myresult
 
     def getProfFromDB(self, courseCode):
@@ -58,7 +64,7 @@ class DBconnect(object):
 ##
 ##        return myresult
     
-    def getCourseIdFromDB(self, year, term):
+    def getCourseIdFromDB(self, year, term, courseSection):
 
         mycursor = self.mydb.cursor()
         
@@ -67,6 +73,11 @@ class DBconnect(object):
         mycursor.execute("Select course_id from offering where " + Param + ";")
         
         myresult = mycursor.fetchall()
+
+        ##GET THE SECTION OF THE CLASS
+        mycursor.execute("Select section from offering where " + Param + ";")
+        temp = mycursor.fetchall()
+        courseSection.append(self.getCleanOneTuple(temp))
         
         return myresult
 

@@ -44,11 +44,13 @@ TimeSlot_scheduler = TimeSchedule()
 
 ListOfAdeptC = []
 ListOfBegC = []
+courseSection = []
 
-course_id = DBConnect.getCourseIdFromDB(UserInput[2], UserInput[1])
+course_id = DBConnect.getCourseIdFromDB(UserInput[2], UserInput[1], courseSection)
 course_id = DBConnect.getCleanOneTuple(course_id)
-print("course_id : ")
-print(course_id)
+##print("course_id : ")
+##print(course_id)
+
 
 Coursecode = DBConnect.getCourseCodeFromDB(course_id)
 Coursecode = DBConnect.getCleanOneTuple(Coursecode)
