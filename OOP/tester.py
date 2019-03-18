@@ -53,11 +53,15 @@ course_id = DBConnect.getCleanOneTuple(course_id)
 
 
 Coursecode = DBConnect.getCourseCodeFromDB(course_id)
-Coursecode = DBConnect.getCleanOneTuple(Coursecode)
+print(len(Coursecode))
+Coursecode = DBConnect.getTupleInArray(Coursecode)
+
 
 List_prof = DBConnect.getProfFromDB(Coursecode)
+##print("prof", List_prof)
 List_prof = DBConnect.getCleanOneTuple(List_prof)
 
+##print("prof", List_prof)
 DBConnect.getProfPrefFromDb(List_prof, ListOfAdeptC, ListOfBegC)
 combination = DBConnect.Arrange(List_prof, ListOfAdeptC, ListOfBegC, Coursecode)
 ##for x in range(0, len(Coursecode)):
@@ -69,7 +73,6 @@ combination = DBConnect.Arrange(List_prof, ListOfAdeptC, ListOfBegC, Coursecode)
 ##print(ListOfBegC)
 #matrix = TimeSlot_scheduler.fill_sched(Coursecode, List_prof)
 #print(matrix)
-
 ##print(List_prof)
 ##print(Coursecode)
 ##print(ClassRoomList[1][0][0])

@@ -6,16 +6,37 @@ class DBconnect(object):
         self.mydb = mysql.connector.connect(
                host = "localhost",
                user = "root",
-               passwd = "1234",
+               passwd = "mysql11",
                database = "thesis"
         )
 
-    def getCleanOneTuple(self, data):
+    def getTupleInArray(self,data):
+##        print(data)
         rawData = data
         cleanData = []
+        if rawData is None:
+            print("Empty Data")
+            
+        for x in range(0, len(rawData)):
+##            print(rawData[x][0][0])
+            cleanData.append( rawData[x][0][0])
+
+##        print("After:", cleanData)
+        
+        return cleanData
+    
+    def getCleanOneTuple(self, data):
+##        print(data)
+        rawData = data
+        cleanData = []
+        if rawData is None:
+            print("Empty Data")
+            
         for x in range(0, len(rawData)):
             cleanData.append( rawData[x][0] )
 
+##        print("After:", cleanData)
+        
         return cleanData
 
     def getCourseCodeFromDB(self, courseID):
@@ -35,8 +56,8 @@ class DBconnect(object):
             param += "course_id = " + str(courseID[x])
             mycursor.execute("SELECT course_code FROM course WHERE " + param)
             myresult.append(mycursor.fetchall())
+            
         print(len(myresult))
-        input("ajshgrf")
         return myresult
 
     def getProfFromDB(self, courseCode):
@@ -51,7 +72,7 @@ class DBconnect(object):
         mycursor.execute("SELECT Faculty_ID FROM thesis.professors where category in( select category from categories where " + param + ");")
 
         myresult = mycursor.fetchall()
-    
+##        print(param)
         return myresult
 
 ##    def getProfFromDB(self):
@@ -159,7 +180,7 @@ class DBconnect(object):
         
         mycursor = self.mydb.cursor()
         #ListOfProf = ['CABREDO, RAFAEL', 'CHENG, CHARIBETH', 'CHU, SHIRLEY', 'RIVERA, PAULINE']
-        #print(ListOfProf)
+##        print(ListOfProf)
         for x in range(0, len(ListOfProf)):
             param = "Faculty_ID = \'" + str(ListOfProf[x]) + "\'"
             #---Check for adept---
@@ -168,12 +189,14 @@ class DBconnect(object):
             AdeptResult = mycursor.fetchall()
             CleanAdeptResult = self.getCleanOneTuple(AdeptResult)
             ListOfAdeptC.append(CleanAdeptResult)
+##            print(ListOfAdeptC)
 
             #--Get Beginner Courses--
             mycursor.execute("SELECT course FROM categories where category in ( Select category from thesis.professors Where " + param + "  AND proficiency = \'Beginner\');")
             BeginnerResult = mycursor.fetchall()
             CleanBeginnerResult = self.getCleanOneTuple(BeginnerResult)
             ListOfBegC.append(CleanBeginnerResult)
+##            print(ListOfBegC)
 
     def Arrange(self, prof, ListOfAdeptC, ListOfBegC, courseCode):
         CourseTable = [[] for x in range(0, len(courseCode)) ]
