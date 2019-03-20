@@ -13,7 +13,6 @@ class TimeSchedule(object):
         #        self.counter = 0
         #        #self.initialize()
         self.course_id = [['1919'], ['1920']]
-
         # def initialize(self):
         # self.mycursor.execute(Select course_id from course)
         # self.courseid = self.mycursor.fetchall()
@@ -112,22 +111,22 @@ class TimeSchedule(object):
         schedules = self.fill_schedv2(courseCode, combination, Classroom, partition)
         #self.printschedule(schedules)
         # change it into Object instead of matrix
-        ClassroomList = []
-        self.matrix_to_Object(schedules, ClassroomList)
+        self.ClassroomList = []
+        self.matrix_to_Object(schedules, self.ClassroomList)
         # -------------------------------Scoring function here------------------------
         #--------------------------------End of Scoring function ---------------------
 
-        if tabulist.checkshort(ClassroomList):
-            tabulist.enqueueShort(ClassroomList)
+        if tabulist.checkshort(self.ClassroomList):
+            tabulist.enqueueShort(self.ClassroomList)
         # -------------------------------Long term stuff-------------------------------
             #-----------------------Checking-------------------
 
             #---------------------End---------------------------
-        if tabulist.checkLong(ClassroomList):
-            tabulist.enqueueLong(ClassroomList)
+        if tabulist.checkLong(self.ClassroomList):
+            tabulist.enqueueLong(self.ClassroomList)
         #--------------------------------End Long term stuff-------------------------
-        for x in ClassroomList:
-            x.print_all()
+##        for x in ClassroomList:
+##            x.print_all()
 ##        tabulist.print_all()
 
 ##    def chooseRandomCourseCombi(self, specificCourseList):
@@ -213,7 +212,7 @@ class TimeSchedule(object):
                 else:
                    chosenindex = x
 
-        print(chosenindex, chosenindex2, len(room[chosenindex]), len(room[chosenindex2]))
+##        print(chosenindex, chosenindex2, len(room[chosenindex]), len(room[chosenindex2]))
                                              
         if(chosenindex == 0):
             return chosenindex2

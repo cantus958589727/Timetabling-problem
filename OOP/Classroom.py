@@ -15,6 +15,7 @@ class Classroom(object):
         self.set_time_slot()    
 
     # set time slot
+        
     def set_time_slot(self):
         t = []
 

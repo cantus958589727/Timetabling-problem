@@ -81,6 +81,13 @@ Coursecode = DM.testClassroomType(Coursecode)
 #print(Coursecode)
 TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList, partition, combination)
 
+profCount = dict()
+for x in TimeSlot_scheduler.ClassroomList:
+
+    profCount = DM.get_prof_total_classroom(x, profCount)
+
+
+print(profCount)
 #sArray = ['BIOINFO', 'Mr. Anish']
 #TimeSlot_scheduler.random_schedule(ClassRoomList, 'Bean')
 #sArray2 = ['COMPRO2' , 'S. Alain']
