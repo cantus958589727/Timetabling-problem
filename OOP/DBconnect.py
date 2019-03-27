@@ -234,4 +234,10 @@ class DBconnect(object):
                         CourseTable[x].append(prof[y])
 						
         return CourseTable
+    
+    def getTime(self,ID):
+        mycursor = self.mydb.cursor()
+        mycursor.execute("SELECT thesis.preferredtime.PreferredTime FROM thesis.preferredtime where thesis.preferredtime.Faculty_ID ='" +str(ID)  +"';" )
+        Time = mycursor.fetchall()
+        return Time
         

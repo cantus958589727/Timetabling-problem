@@ -1,6 +1,9 @@
 # Time scheduling
 import random
 from Classroom import*
+from LoadDetail import*
+from ProfLoad import*
+from DBconnect import*
 import copy
 
 class TimeSchedule(object):
@@ -410,14 +413,10 @@ class TimeSchedule(object):
                     
     def scoringFunction(self, tabulist, ClassroomList):
         # -------------------------------Scoring function here------------------------
+        CurrentScore = self.score(ClassroomList)
         #--------------------------------End of Scoring function ---------------------
-
-        print("class before putting in tabu list")
-        ClassroomList[0].print_all()
         if tabulist.checkshort(ClassroomList):
-            print("check short is true")
             tabulist.enqueueShort(copy.deepcopy(ClassroomList))
-            tabulist.short[0][0].print_all()
         # -------------------------------Long term stuff-------------------------------
             #-----------------------Checking-------------------
 
@@ -914,6 +913,260 @@ class TimeSchedule(object):
         # check if the sched is in the
         if tabu_list.checkshort(schedule):
             tabu_list.enqueueLong(schedule)
+
+        #function that takes classroomlist as a parameter
+    def score(self, ClassroomList):
+        def FindProf(Loadlist,profID):
+         #   print("at find prof")
+            found = False
+            for x in range(0,len(Loadlist)):
+                if(Loadlist[x].GetProf()==profID):
+             #       print("found one")
+                    return x
+            if(found == False):
+                return -1
+                
+    #    time = ClassroomList[0].get_monday_time()[0].get_time()
+    #    profID =  ClassroomList[0].get_monday_time()[0].get_prof()
+   #     course = ClassroomList[0].get_monday_time()[0].get_course()
+   #     prof = ProfLoad(profID,12)
+   #     prof.add(LoadDetail(course,time),'M')
+   #     print(prof.GetM()[0].get_Course())
+   #     print(prof.GetM()[0].get_STime())
+        Mclass=0
+        Tclass=0
+        Wclass=0
+        Hclass=0
+        Fclass=0
+        Loadlist = []
+   #     LoadlistM = []
+    #    LoadlistT = []
+     #   LoadlistW = []
+      #  LoadlistH = []
+       # LoadlistF = []
+#     LoadlistM.append(prof)
+#     print(LoadlistM[0].GetProf()) 
+        noProf=0
+##        print("monday classes")
+##        print("_________________________________________")
+        for x in range (0,len(ClassroomList)):
+            for y in range (0,len(ClassroomList[x].get_monday_time())):
+                if(ClassroomList[x].get_monday_time()[y].get_course()!=None):
+                    Mclass+=1 #counts classes with course
+                    if(ClassroomList[x].get_monday_time()[y].get_prof()==None):
+                        noProf+=1
+                    
+                if(ClassroomList[x].get_monday_time()[y].get_prof()!=None and ClassroomList[x].get_monday_time()[y].get_course()!=None and len(str(ClassroomList[x].get_monday_time()[y].get_prof())) >1)  :       
+##                    print(ClassroomList[x].get_monday_time()[y].get_time())
+##                    print(ClassroomList[x].get_monday_time()[y].get_prof())
+##                    print(ClassroomList[x].get_monday_time()[y].get_course())
+##                    print("")
+                    time = ClassroomList[x].get_monday_time()[y].get_time()
+                    profID =  ClassroomList[x].get_monday_time()[y].get_prof()
+                    course = ClassroomList[x].get_monday_time()[y].get_course()
+                    profIndex = FindProf(Loadlist,profID)
+                    if(profIndex==-1):
+                        prof = ProfLoad(profID,12)
+                        prof.add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'M')
+                        Loadlist.append(prof)
+                    else:
+                        Loadlist[profIndex].add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'M')
+
+
+##        print("tuesday classes")
+##        print("_________________________________________")
+        for x in range (0,len(ClassroomList)):
+            for y in range (0,len(ClassroomList[x].get_tuesday_time())):
+                if(ClassroomList[x].get_tuesday_time()[y].get_course()!=None):
+                    Tclass+=1
+                    if(ClassroomList[x].get_tuesday_time()[y].get_prof()==None):
+                        noProf+=1
+                    
+                if(len(str(ClassroomList[x].get_tuesday_time()[y].get_prof()))>1 and ClassroomList[x].get_tuesday_time()[y].get_prof()!=None and ClassroomList[x].get_tuesday_time()[y].get_course()!=None) :
+##                    print(ClassroomList[x].get_tuesday_time()[y].get_time())
+##                    print(ClassroomList[x].get_tuesday_time()[y].get_prof())
+##                    print(ClassroomList[x].get_tuesday_time()[y].get_course())
+##                    print("")
+                    time = ClassroomList[x].get_tuesday_time()[y].get_time()
+                    profID =  ClassroomList[x].get_tuesday_time()[y].get_prof()
+                    course = ClassroomList[x].get_tuesday_time()[y].get_course()
+                    profIndex = FindProf(Loadlist,profID)
+                    if(profIndex==-1):
+                        prof = ProfLoad(profID,12)
+                        prof.add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'T')
+                        Loadlist.append(prof)
+                                 
+                    else:
+                  #      print("found second sched")
+                        Loadlist[profIndex].add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'T')
+                        
+                    
+##        print("wednesday classes")
+##        print("_________________________________________")
+        for x in range (0,len(ClassroomList)):
+            for y in range (0,len(ClassroomList[x].get_wednesday_time())):
+                if(ClassroomList[x].get_wednesday_time()[y].get_course()!=None):
+                    Wclass+=1
+                    if(ClassroomList[x].get_wednesday_time()[y].get_prof()==None):
+                        noProf+=1
+                if(len(str(ClassroomList[x].get_wednesday_time()[y].get_prof()))>1 and ClassroomList[x].get_wednesday_time()[y].get_prof()!=None and ClassroomList[x].get_wednesday_time()[y].get_course()!=None)   :
+##                    print(ClassroomList[x].get_wednesday_time()[y].get_time())
+##                    print(ClassroomList[x].get_wednesday_time()[y].get_prof())
+##                    print(ClassroomList[x].get_wednesday_time()[y].get_course())
+##                    print("")
+                    time = ClassroomList[x].get_wednesday_time()[y].get_time()
+                    profID =  ClassroomList[x].get_wednesday_time()[y].get_prof()
+                    course = ClassroomList[x].get_wednesday_time()[y].get_course()
+                    profIndex = FindProf(Loadlist,profID)
+                    if(profIndex==-1):
+                        prof = ProfLoad(profID,12)
+                        prof.add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'W')
+                        Loadlist.append(prof)
+                 
+                    else:
+                 #       print("found second sched")
+                        Loadlist[profIndex].add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'W')
+              
+        
+##        print("thursday classes")
+##        print("_________________________________________")
+        for x in range (0,len(ClassroomList)):
+            for y in range (0,len(ClassroomList[x].get_thursday_time())):
+                if(ClassroomList[x].get_thursday_time()[y].get_course()!=None):
+                    Hclass+=1
+                    if(ClassroomList[x].get_thursday_time()[y].get_prof()==None):
+                        noProf+=1
+                if(len(str(ClassroomList[x].get_thursday_time()[y].get_prof()))>1 and ClassroomList[x].get_thursday_time()[y].get_prof()!=None and ClassroomList[x].get_thursday_time()[y].get_course()!=None)   :
+##                    print(ClassroomList[x].get_thursday_time()[y].get_time())
+##                    print(ClassroomList[x].get_thursday_time()[y].get_prof())
+##                    print(ClassroomList[x].get_thursday_time()[y].get_course())
+##                    print("")
+                    time = ClassroomList[x].get_thursday_time()[y].get_time()
+                    profID =  ClassroomList[x].get_thursday_time()[y].get_prof()
+                    course = ClassroomList[x].get_thursday_time()[y].get_course()
+                    profIndex = FindProf(Loadlist,profID)
+                    if(profIndex==-1):
+                        prof = ProfLoad(profID,12)
+                        prof.add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'H')
+                        Loadlist.append(prof)
+                  
+                    else:
+                #        print("found second sched")
+                        Loadlist[profIndex].add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'H')
+          
+##        print("friday classes")
+##        print("_________________________________________")
+        for x in range (0,len(ClassroomList)):
+            for y in range (0,len(ClassroomList[x].get_friday_time())):
+                if(ClassroomList[x].get_friday_time()[y].get_course()!=None):
+                    Fclass+=1
+                    if(ClassroomList[x].get_friday_time()[y].get_prof()==None):
+                        noProf+=1
+                if(len(str(ClassroomList[x].get_friday_time()[y].get_prof()))>1 and ClassroomList[x].get_friday_time()[y].get_prof()!=None and ClassroomList[x].get_friday_time()[y].get_course()!=None)   :
+##                    print(ClassroomList[x].get_friday_time()[y].get_time())
+##                    print(ClassroomList[x].get_friday_time()[y].get_prof())
+##                    print(ClassroomList[x].get_friday_time()[y].get_course())
+##                    print("")
+                    time = ClassroomList[x].get_friday_time()[y].get_time()
+                    profID =  ClassroomList[x].get_friday_time()[y].get_prof()
+                    course = ClassroomList[x].get_friday_time()[y].get_course()
+                    profIndex = FindProf(Loadlist,profID)
+                    if(profIndex==-1):
+                        prof = ProfLoad(profID,12)
+                        prof.add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'F')
+                        Loadlist.append(prof)                   
+                    else:
+                #        print("found second sched")
+                        Loadlist[profIndex].add(LoadDetail(course,time,ClassroomList[x].get_classroom_number()),'F')
+        #add preffered schedule to prof
+        DBConnect = DBconnect()
+        for x in range (0, len(Loadlist)):
+            timeSlots = DBConnect.getTime(Loadlist[x].GetProf())
+            for y in range(0,len(timeSlots)):
+                Loadlist[x].addTime(timeSlots[y])
+            
+##        print("TUESDAY LOADS_________________________")            
+        for x in range (0, len(Loadlist)):
+            Loadlist[x].PrintLoad('T')
+##            print(Loadlist[x].getPrefferedTime())
+##            print("")
+##        print("WEDNESDAY LOADS_________________________")   
+        for x in range (0, len(Loadlist)):
+            Loadlist[x].PrintLoad('W')
+##            print(Loadlist[x].getPrefferedTime())
+##            print("")
+##        print("THURSDAY LOADS_________________________")   
+        for x in range (0, len(Loadlist)):
+            Loadlist[x].PrintLoad('H')
+##            print(Loadlist[x].getPrefferedTime())
+##            print("")
+##        print("FRIDAY LOADS_________________________")   
+        for x in range (0, len(Loadlist)):
+            Loadlist[x].PrintLoad('F')
+            print(Loadlist[x].getPrefferedTime())
+            print("")
+        temp = 0
+        score = (Tclass+Wclass+Hclass+Fclass)/4
+        totalClass  = Tclass+Wclass+Hclass+Fclass
+        temp = temp+ (abs(Tclass-score))
+        temp = temp+ (abs(Hclass-score))
+        temp = temp+ (abs(Wclass-score))
+        temp = temp+ (abs(Fclass-score))
+        fullfilled = (abs(score-temp))/score
+##        print(Tclass)
+##        print(Wclass)
+##        print(Hclass)
+##        print(Fclass)
+##        print(score)
+        Tclass = Tclass/score
+        Hclass = Hclass/score
+        Wclass = Wclass/score
+        Fclass = Fclass/score
+  #      print(Tclass)
+  #      print(Wclass)
+  #      print(Hclass)
+  #      print(Fclass)
+        if(Tclass>1):
+            Tclass=abs(2-Tclass)
+        if(Wclass>1):
+            Wclass=abs(2-Wclass)
+        if(Hclass>1):
+            Hclass=abs(2-Hclass)
+        if(Fclass>1):
+            Fclass=abs(2-Fclass)
+#        print(score)
+#        print(fullfilled)
+#        print(Tclass)
+#        print(Wclass)
+#        print(Hclass)
+#        print(Fclass)
+        fullfilledNoProf = noProf/(Tclass+Wclass+Hclass+Fclass)
+        fullfilledSpread = (Tclass+Wclass+Hclass+Fclass)/4
+        print("fullfilled spread percentage: "+ str(fullfilledSpread))
+        #preffered time checking
+        courseInTime=0
+        consecutiveHours = 0
+        overload = 0
+        for x in range (0, len(Loadlist)):
+            courseInTime = courseInTime+ Loadlist[x].getPrefferedCorrect()
+            consecutiveHours = consecutiveHours+Loadlist[x].consecutive()
+            overload = overload + Loadlist[x].overload()
+        print(str(courseInTime)+" "+str(totalClass)+" "+str(courseInTime/totalClass))
+        print(str(fullfilledSpread+(courseInTime/totalClass)/2))
+        if (noProf >0):
+            print("some subjects have no prof")
+        if (consecutiveHours > 0):
+            print("some prof teach more than 4.5 hours in a row")
+        if (overload > 0):
+            print("some prof have too much schedule this term")
+        baseScore = totalClass*3
+        p = 0.4 #maximum bonus percentage
+        p1 = .5*p*fullfilledSpread
+        p2 = .5*p*(courseInTime/totalClass)
+        N = baseScore*(1+p1+p2)
+        N2 = N-2*(noProf+consecutiveHours+overload)
+        print(str(N2)+" out of "+ str(baseScore*(1+p)))
+        return N2
 
 
 
