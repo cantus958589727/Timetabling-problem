@@ -37,6 +37,18 @@ class Classroom(object):
         self.__friday = t[4]
 
     # getter
+    def get_time(self, time):
+        slot = []
+        switcher = {
+            0: self.get_monday_time(),
+            1: self.get_tuesday_time(),
+            2: self.get_wednesday_time(),
+            3: self.get_thursday_time(),
+            4: self.get_friday_time()
+        }
+
+        return switcher.get(time)
+    
     def get_monday_time(self):
         return self.__monday
 
@@ -55,6 +67,15 @@ class Classroom(object):
     def get_classroom_number(self):
         return self.__room_number
 
+    def set_slot(self, day, slot, target):
+##        print("CLASSROOM BEFORE: ")
+##        print(self.get_time(day)[target].get_course())
+        self.get_time(day)[target] = slot
+        self.get_time(day)[target].set_course(slot.get_course())
+        self.get_time(day)[target].set_prof(slot.get_prof())
+##        print("CLASSROOM AFTER: ")
+##        print(self.get_time(day)[target].get_course())
+##        input()
     # ------------------Normal schedule---------------------------
     def available_room_set_prof_wf(self, prof):
         found = False

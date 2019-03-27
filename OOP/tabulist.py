@@ -1,3 +1,5 @@
+from DataManipulator import*
+
 class tabulist:
     # shoart = short-term tabulist
     # long = long-term tabulist
@@ -5,7 +7,8 @@ class tabulist:
         self.short = []
         self.long = []
         self.shortLen = 5
-
+        self.DM = DataManipulator()
+        
     def emptyList(self):
         return self.short == []
         return self.long == []
@@ -30,10 +33,43 @@ class tabulist:
 
     # --------short term function-------
     def checkshort(self, schedule):
-        for x in range(0, len(self.short)):
-            if self.short[x] == schedule:
-                return False
-        return True
+##            tempList = []
+##            for y in range(0, len(schedule)):
+##                tempList.append(schedule[y])
+##
+##            for x in tempList:
+##                print(x.print_all())
+            return True
+        
+##        for ClassList in self.short:
+##            compareList = []
+##            for classroom in range(0, len(ClassList)):
+##                compareList.append(ClassList[classroom])
+##            for x in compareList:
+##                print(x.print_all())
+##            input()
+        
+        if not self.sizeShort():
+            return True
+
+##        print("test")
+##        for ClassList in self.short:
+##            ClassList[0].print_all()
+    
+##        schedule[0].print_all()
+##        self.short[0][0].print_all()
+        if (self.DM.compareTwoSchedules(schedule, self.short[0])):
+            print("IN")
+            return True
+        
+##        for ClassList in self.short:
+##            for classroom in range(0, len(ClassList)):
+##                for x in range(0, 6):
+##                    if ClassList[classroom].get_tuesday_time()[x].get_course() != schedule[classroom].get_tuesday_time()[x].get_course():
+##                        return True
+##                    if ClassList[classroom].get_wednesday_time()[x].get_course() != schedule[classroom].get_wednesday_time()[x].get_course():
+##                        return True
+        return False
 
     def enqueueShort(self, schedule):
         self.short.insert(0, schedule)
@@ -55,3 +91,10 @@ class tabulist:
         for x in self.long:
             for y in x:
                 print(y.print_all())
+
+    def print_short(self):
+        print("Short Term")
+        for x in self.short:
+            for y in x:
+                print(y.print_all())
+            input()

@@ -7,8 +7,8 @@ from GUI import *
 
 print("START")
 #[ Department, Term, Year ]
-UserInput = []
-frame = GUI(UserInput)
+#UserInput = []
+#frame = GUI(UserInput)
 
 tabu_list = tabulist()
 DBConnect = DBconnect()
@@ -18,6 +18,8 @@ classified_rooms = DBConnect.getRoomsFromDB()
 ##print(classified_rooms)
 Lecs = DM.InstantiateMultipleClassrooms(classified_rooms[0])
 Labs = DM.InstantiateMultipleClassrooms(classified_rooms[1])
+
+flowCourse = DBConnect.getFlowChartFromDB(2015)
 
 print(Lecs)
 print(Labs)
@@ -38,7 +40,6 @@ ClassRoomList.append(schedules)
 
 ClassRoomList = DM.prepareScheduleHolder(ClassRoomList)
 
-print(ClassRoomList)
 
 TimeSlot_scheduler = TimeSchedule()
 
@@ -46,7 +47,7 @@ ListOfAdeptC = []
 ListOfBegC = []
 courseSection = []
 
-course_id = DBConnect.getCourseIdFromDB(UserInput[2], UserInput[1], courseSection)
+course_id = DBConnect.getCourseIdFromDB(2015, 1, courseSection)
 course_id = DBConnect.getCleanOneTuple(course_id)
 ##print("course_id : ")
 ##print(course_id)
@@ -79,15 +80,8 @@ combination = DBConnect.Arrange(List_prof, ListOfAdeptC, ListOfBegC, Coursecode)
 ##print(len(ClassRoomList[1]))
 Coursecode = DM.testClassroomType(Coursecode)
 #print(Coursecode)
-TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList, partition, combination)
+TimeSlot_scheduler.schedule_timetabling(Coursecode, List_prof, tabu_list, ClassRoomList, partition, combination, flowCourse)
 
-profCount = dict()
-for x in TimeSlot_scheduler.ClassroomList:
-
-    profCount = DM.get_prof_total_classroom(x, profCount)
-
-
-print(profCount)
 #sArray = ['BIOINFO', 'Mr. Anish']
 #TimeSlot_scheduler.random_schedule(ClassRoomList, 'Bean')
 #sArray2 = ['COMPRO2' , 'S. Alain']
@@ -106,7 +100,7 @@ print(profCount)
 #MainMatrix.append(SubMatrix2)
 #MainMatrix.append(SubMatrix)
 
-
+print(len(ClassRoomList))
 
 
 #print(len(TimeSlot_scheduler.course_id))

@@ -24,3 +24,16 @@ class TimeSlot(object):
 
     def get_course(self):
         return self.__course
+
+    def toString(self):
+        if self.get_prof() is None:
+            prof = "None"
+        else:
+            prof = self.get_prof()
+            
+        if self.get_course() is None:
+            course = "None"
+        else:
+            course = self.get_course()
+            
+        return (prof + " " + course)

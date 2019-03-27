@@ -6,7 +6,7 @@ class DBconnect(object):
         self.mydb = mysql.connector.connect(
                host = "localhost",
                user = "root",
-               passwd = "mysql11",
+               passwd = "1234",
                database = "thesis"
         )
 
@@ -102,6 +102,30 @@ class DBconnect(object):
         
         return myresult
 
+    def getFlowChartFromDB(self, year):
+        mycursor = self.mydb.cursor()
+
+        # get flow chart id
+        param = "start_year = " + str(year)
+        mycursor.execute("select flowchart_id from flowcharts where " + param + " ;")
+        flowchart_id = mycursor.fetchall()
+        flowchart_id = self.getCleanOneTuple(flowchart_id)
+
+        # use flowchart id to get coyurse id
+        param = ""
+        for x in range(0, len(flowchart_id)):
+            param += "flowchart_id = " + str(flowchart_id[x]) + " "
+            if(x < len(flowchart_id)-1):
+               param += ' OR '
+        mycursor.execute("select course_id from flowcourses where " + param + " ;")
+        course_id = self.getCleanOneTuple(mycursor.fetchall())
+
+        #get the course code using course ID
+        courseCode = self.getCourseCodeFromDB(course_id)
+        courseCode = self.getCleanOneTuple(courseCode)
+        courseCode = self.getCleanOneTuple(courseCode)
+        return courseCode
+        
 ##    def getCourseIdFromDB(self):
 ##
 ##        mycursor = self.mydb.cursor()
