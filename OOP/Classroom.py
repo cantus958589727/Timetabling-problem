@@ -1,4 +1,5 @@
 from TimeSlot import*
+from DBconnect import*
 from prettytable import PrettyTable
 
 
@@ -230,21 +231,42 @@ class Classroom(object):
 
     # display the schedules
     def print_all(self):
+        DBConnect = DBconnect()
         print("ROOM NUMBER: " + self.__room_number )
         t = PrettyTable(['Time', 'Monday Prof', 'Monday Course', 'Tuesday Prof', ' Tuesday Course ', 'Wednesday Prof',
-                         'Wednesday Course', 'Thursday Prof', 'Thursday Course', 'Friday Prof', 'Firday Course'])
+                         'Wednesday Course', 'Thursday Prof', 'Thursday Course', 'Friday Prof', 'Friday Course'])
         for x in range(0, 6):
             list = []
             list.append(self.__monday[x].get_time())
-            list.append(self.__monday[x].get_prof())
+            if str(self.__monday[x].get_prof()) != 'None' and self.__monday[x].get_prof() != " ":
+                prof = DBConnect.getProfNameFromDb(self.__monday[x].get_prof())
+                list.append(prof[0][0])
+            else:
+                list.append(self.__monday[x].get_prof())
             list.append(self.__monday[x].get_course())
-            list.append(self.__tuesday[x].get_prof())
+            if str(self.__tuesday[x].get_prof()) != "None" and self.__tuesday[x].get_prof() != " ":
+                prof = DBConnect.getProfNameFromDb(self.__tuesday[x].get_prof())
+                list.append(prof[0][0])
+            else:
+                list.append(self.__tuesday[x].get_prof())
             list.append(self.__tuesday[x].get_course())
-            list.append(self.__wednesday[x].get_prof())
+            if str(self.__wednesday[x].get_prof()) != "None" and self.__wednesday[x].get_prof() != " ":
+                prof = DBConnect.getProfNameFromDb(self.__wednesday[x].get_prof())
+                list.append(prof[0][0])
+            else:
+                list.append(self.__wednesday[x].get_prof())
             list.append(self.__wednesday[x].get_course())
-            list.append(self.__thursday[x].get_prof())
+            if str(self.__thursday[x].get_prof()) != "None" and self.__thursday[x].get_prof() != " ":
+                prof = DBConnect.getProfNameFromDb(self.__thursday[x].get_prof())
+                list.append(prof[0][0])
+            else:
+                list.append(self.__thursday[x].get_prof())
             list.append(self.__thursday[x].get_course())
-            list.append(self.__friday[x].get_prof())
+            if  str(self.__friday[x].get_prof()) != "None" and self.__friday[x].get_prof() != " ":
+                prof = DBConnect.getProfNameFromDb(self.__friday[x].get_prof())
+                list.append(prof[0][0])
+            else:
+                list.append(self.__friday[x].get_prof())
             list.append(self.__friday[x].get_course())
             t.add_row(list)
         print(t)

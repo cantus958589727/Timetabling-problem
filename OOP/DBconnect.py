@@ -6,7 +6,7 @@ class DBconnect(object):
         self.mydb = mysql.connector.connect(
                host = "localhost",
                user = "root",
-               passwd = "1234",
+               passwd = "mysql11",
                database = "thesis"
         )
 
@@ -73,6 +73,28 @@ class DBconnect(object):
 
         myresult = mycursor.fetchall()
 ##        print(param)
+        return myresult
+
+    def getAllProfFromDb(self):
+        #SELECT user_id FROM thesis.users where dept_id != 42;
+        mycursor = self.mydb.cursor()
+
+        mycursor.execute("SELECT user_id FROM thesis.users where dept_id != 42;")
+
+        myresult = mycursor.fetchall()
+        return myresult
+
+    def getProfNameFromDb(self, prof):
+        mycursor = self.mydb.cursor()
+        mycursor.execute("SELECT first_name FROM thesis.users where user_id = " + str(prof) + ";")
+
+        myresult = mycursor.fetchall()
+
+        if myresult:
+            return myresult
+        else:
+            mycursor.execute("SELECT Distinct name FROM thesis.professors where Faculty_ID = " + str(prof) + ";")
+        myresult = mycursor.fetchall()
         return myresult
 
 ##    def getProfFromDB(self):

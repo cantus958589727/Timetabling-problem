@@ -29,7 +29,7 @@ class TimeSlot(object):
         if self.get_prof() is None:
             prof = "None"
         else:
-            prof = self.get_prof()
+            prof = str(self.get_prof())
             
         if self.get_course() is None:
             course = "None"

@@ -17,7 +17,8 @@ class TimeSchedule(object):
         #        self.counter = 0
         #        #self.initialize()
         self.course_id = [['1919'], ['1920']]
-
+        db = DBconnect()
+        self.all_prof = db.getCleanOneTuple(db.getAllProfFromDb())
         # def initialize(self):
         # self.mycursor.execute(Select course_id from course)
         # self.courseid = self.mycursor.fetchall()
@@ -107,27 +108,28 @@ class TimeSchedule(object):
                     TempClassroom.available_room_set_course_f(sched[0])
             ClassroomList.append(TempClassroom)
 
-    def move_course(self, timeslot, sched, partition, courseOffered, random, flowchart):
+    def move_course(self, timeslot, sched, partition, courseOffered, r, flowchart):
         #print(sched[0].get_monday_time()[0].get_course())
         #input()
-        if(random == 1):
+        if(r == 1):
             #copy the else and change it randomly
             for x in timeslot:
+                print(x)
                 roomtype = self.check_course_room(courseOffered, sched[x[0]].get_time(x[1])[x[2]])
 
                 lowerbound = 0
-                upperbound = len(sched)
+                upperbound = len(sched)-1
     
                 if(roomtype == "Lecture"):
                     upperbound = partition
                 elif(roomtype == "Laboratory"):
-                    lowerbound = parition
+                    lowerbound = partition
 
                 check = False
                 while(check != True):
                     room = random.randint(lowerbound-1 , upperbound)
                     day = random.randint(0,2)
-                    slot = random.randint(-1, len(sched[room].get_time(day)))
+                    slot = random.randint(-1, len(sched[room].get_time(day)) - 1)
 
                     indexval = []
                     indexval.append(room)
@@ -263,7 +265,9 @@ class TimeSchedule(object):
         for room in range(0, len(sched)):
 ##            print(prof, "vs" , sched[room].get_time(day)[time].get_prof())
 ##            print(course, "vs", sched[room].get_time(day)[time].get_course())
-            if(room == target[0]):
+            if(sched[room].get_time(day)[time].get_prof() is None):
+                pass
+            elif(room == target[0]):
 ##                print("target")
 ##                print(prof, "vs" , sched[room].get_time(day)[time].get_prof())
 ##                print(course, "vs", sched[room].get_time(day)[time].get_course())
@@ -330,7 +334,7 @@ class TimeSchedule(object):
         self.scoringFunction(tabulist, ClassroomList)
         flag = True
         while flag:
-            self.improveSchedule(ClassroomList, flowCourse, partition, courseCode)
+            self.improveSchedule(ClassroomList, flowCourse, partition, courseCode, tabulist)
             self.scoringFunction(tabulist, ClassroomList)
             # if condition
             # quit the loop
@@ -339,8 +343,8 @@ class TimeSchedule(object):
 
         #--------------------------------End Long term stuff-------------------------
         #tabulist.print_short()
-        print("size: ",tabulist.sizeShort())
-        
+        print("size: ", tabulist.sizeShort())
+        print("size: ", tabulist.sizeLong())
 
 ##    def chooseRandomCourseCombi(self, specificCourseList):
 #### this function gets a random combination of course and prof
@@ -376,7 +380,78 @@ class TimeSchedule(object):
         for perCourse in flowCourse:
             arrayCount.append(courseArray.count(perCourse))
 
-    def improveSchedule(self, ClassroomList, flowCourse, partition, courseCode):
+    def checkConflict_time(self, sched, prof, timeslot):
+        conflict = False
+        for x in sched:
+            if(x.get_time(timeslot[1])[timeslot[2]] == prof):
+                conflict = True
+
+            if(conflict):
+                break
+
+        return conflict
+    
+    def forceAssign(self, sched, slot, dfa, specifictimeslot):
+        
+        notAssigned = True
+        
+        while(notAssigned):
+            rand = random.randint(-1, len(self.all_prof)-1)
+
+            notAssigned = self.checkConflict_time(sched, self.all_prof[rand], specifictimeslot)
+
+        prof = self.all_prof[rand]
+        print(prof)
+        sched[specifictimeslot[0]].get_time(specifictimeslot[1])[specifictimeslot[2]].set_prof(prof)
+        sched[specifictimeslot[0]].get_time(specifictimeslot[1]+2)[specifictimeslot[2]].set_prof(prof)
+
+        print("to string: ", sched[specifictimeslot[0]].get_time(specifictimeslot[1]+2)[specifictimeslot[2]].toString())        
+        if dfa is None:
+            dfa = dict()
+            
+        if prof in dfa:
+            dfa[prof] += 2
+        else:
+            dfa[prof] = 2
+
+        return dfa
+            
+    def forceProf(self, ClassroomList):
+        dictForcedAssign = dict()
+        
+        for classroom in range(0, len(ClassroomList)):
+            for day in range(1,3):
+                print("day",day)
+                for slot in range(0, len(ClassroomList[classroom].get_time(day))):
+                    if(ClassroomList[classroom].get_time(day)[slot].get_prof() == " "):
+                        print("nice")
+                        dictForcedAssign = self.forceAssign(ClassroomList, ClassroomList[classroom].get_time(day)[slot], dictForcedAssign, [classroom, day, slot])
+
+        for x in ClassroomList:
+            x.print_all()
+            
+        print(dictForcedAssign)
+##                        self.forceAssign(ClassroomList, ClassroomList[classroom].get_time(day+2)[slot], dictForcedAssign, [classroom, day+2, slot])
+        
+    
+    def improveSchedule(self, ClassroomList, flowCourse, partition, courseCode, tabulist):
+        # fix the schedule by moving random timeslots multiple times
+        i = 0
+        #move based on i iterations
+        while (i < 10):
+            print("Iteration for improvement # ", i)
+            #generate random timeslot
+            #move_course(self, timeslot, sched, partition, courseOffered, random, flowchart)
+            room = random.randint(0, len(ClassroomList)-1)
+            day = random.randint(0,2)
+##            print(ClassroomList[room].get_time(day), len(ClassroomList[room].get_time(day)))
+            slot = random.randint(-1, len(ClassroomList[room].get_time(day))-1)
+            
+            self.move_course([[room,day,slot]], ClassroomList, partition, courseCode, 1, [])
+
+            self.scoringFunction(tabulist, ClassroomList)
+            i = i + 1
+            
         # fix the course, ensure that there where no conflict in course for students
         for timeslot in range(0, 6):
             courseArray = []
@@ -410,10 +485,15 @@ class TimeSchedule(object):
                 if counter > (len(arrayCount) - 1):
                     counter = 0
                     self.get_FlowCourse_count(courseArray, ClassroomList, timeslot, arrayCount, flowCourse)
+
+        self.forceProf(ClassroomList)
+##            for x in ClassroomList:
+##                x.print_all()
                     
     def scoringFunction(self, tabulist, ClassroomList):
         # -------------------------------Scoring function here------------------------
         CurrentScore = self.score(ClassroomList)
+
         #--------------------------------End of Scoring function ---------------------
         if tabulist.checkshort(ClassroomList):
             tabulist.enqueueShort(copy.deepcopy(ClassroomList))
@@ -1085,26 +1165,26 @@ class TimeSchedule(object):
             for y in range(0,len(timeSlots)):
                 Loadlist[x].addTime(timeSlots[y])
             
-##        print("TUESDAY LOADS_________________________")            
-        for x in range (0, len(Loadlist)):
-            Loadlist[x].PrintLoad('T')
-##            print(Loadlist[x].getPrefferedTime())
-##            print("")
-##        print("WEDNESDAY LOADS_________________________")   
-        for x in range (0, len(Loadlist)):
-            Loadlist[x].PrintLoad('W')
-##            print(Loadlist[x].getPrefferedTime())
-##            print("")
-##        print("THURSDAY LOADS_________________________")   
-        for x in range (0, len(Loadlist)):
-            Loadlist[x].PrintLoad('H')
-##            print(Loadlist[x].getPrefferedTime())
-##            print("")
-##        print("FRIDAY LOADS_________________________")   
-        for x in range (0, len(Loadlist)):
-            Loadlist[x].PrintLoad('F')
-            print(Loadlist[x].getPrefferedTime())
-            print("")
+####        print("TUESDAY LOADS_________________________")            
+##        for x in range (0, len(Loadlist)):
+####            Loadlist[x].PrintLoad('T')
+####            print(Loadlist[x].getPrefferedTime())
+####            print("")
+####        print("WEDNESDAY LOADS_________________________")   
+##        for x in range (0, len(Loadlist)):
+####            Loadlist[x].PrintLoad('W')
+####            print(Loadlist[x].getPrefferedTime())
+####            print("")
+####        print("THURSDAY LOADS_________________________")   
+##        for x in range (0, len(Loadlist)):
+####            Loadlist[x].PrintLoad('H')
+####            print(Loadlist[x].getPrefferedTime())
+####            print("")
+####        print("FRIDAY LOADS_________________________")   
+##        for x in range (0, len(Loadlist)):
+####            Loadlist[x].PrintLoad('F')
+####            print(Loadlist[x].getPrefferedTime())
+####            print("")
         temp = 0
         score = (Tclass+Wclass+Hclass+Fclass)/4
         totalClass  = Tclass+Wclass+Hclass+Fclass

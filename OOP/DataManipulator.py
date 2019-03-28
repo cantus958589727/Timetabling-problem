@@ -72,10 +72,10 @@ class DataManipulator(object):
 ##        print(slot1.get_course(), "vs", slot2.get_course())
 ##        print(slot1.get_prof(), "vs", slot2.get_prof())
         if(slot1.get_course() == slot2.get_course() and slot1.get_prof() == slot2.get_prof()):
-            print("False")
+##            print("False")
             return False
         else:
-            print("True")
+##            print("True")
             return True
     
     def compareSetsOfDays(self, sDays1, sDays2):
@@ -88,7 +88,7 @@ class DataManipulator(object):
         return check
     
     def compareTwoClassrooms(self, class1, class2):
-        print("In comparing two class..")
+##        print("In comparing two class..")
         check = False
 ##        class1.print_all()
 ##        class2.print_all()
@@ -101,7 +101,7 @@ class DataManipulator(object):
 ##        input()
         return check
     def compareTwoSchedules(self, sched1, sched2):
-        print("In comparing two scheds..")
+##        print("In comparing two scheds..")
         check = False
         for x in range(0, len(sched1)):
 ##            sched1[x].print_all()

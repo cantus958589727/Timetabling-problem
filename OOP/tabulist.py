@@ -39,7 +39,7 @@ class tabulist:
 ##
 ##            for x in tempList:
 ##                print(x.print_all())
-            return True
+##            return True
         
 ##        for ClassList in self.short:
 ##            compareList = []
@@ -48,10 +48,8 @@ class tabulist:
 ##            for x in compareList:
 ##                print(x.print_all())
 ##            input()
-        
         if not self.sizeShort():
             return True
-
 ##        print("test")
 ##        for ClassList in self.short:
 ##            ClassList[0].print_all()
@@ -77,6 +75,9 @@ class tabulist:
     def dequeueShort(self):
         return self.short.pop()
 
+    def sizeLong(self):
+        return len(self.long)
+    
     def sizeShort(self):
         return len(self.short)
 

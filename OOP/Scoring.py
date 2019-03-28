@@ -95,13 +95,13 @@ class Scoring(object):
                 unit = 3
                 unit += proflist[prof]
                 proflist[prof] = unit
-                print(proflist[prof])
+##                print(proflist[prof])
                 # add time to prof
                 time = 1.5
                 time += proflisttime[prof]
                 proflisttime[prof] = time
 
-        print(proflist[MainMatrix[0][1][1]])
-        print(proflist[MainMatrix[0][1][1]])
-        print(proflist[MainMatrix[0][1][1]])
+##        print(proflist[MainMatrix[0][1][1]])
+##        print(proflist[MainMatrix[0][1][1]])
+##        print(proflist[MainMatrix[0][1][1]])
 
