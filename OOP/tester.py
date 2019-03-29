@@ -8,8 +8,8 @@ import xlrd
 
 print("START")
 #[ Department, Term, Year ]
-#UserInput = []
-#frame = GUI(UserInput)
+UserInput = []
+frame = GUI(UserInput)
 
 tabu_list = tabulist()
 DBConnect = DBconnect()

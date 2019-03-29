@@ -1,9 +1,11 @@
 from Classroom import*
+from DBconnect import*
 import random
 
 class DataManipulator(object):
 
     def __init__(self):
+        self.db = DBconnect()
         pass
 
 # Assuming these functions will retrieve an object type of the classroom/schedule
@@ -110,5 +112,13 @@ class DataManipulator(object):
             if(check == True):
                 break
 
-        return check    
-            
+        return check
+
+
+    def printDictionaryOfProfessors(self, label, dictionary):
+        print("+---------------------------------------------------------+")
+        print(label)
+        for key, value in dictionary.items():
+            profName = self.db.getCleanOneTuple(self.db.getProfNameFromDb(key))[0]
+            print(profName , " ", value)
+        print("+---------------------------------------------------------+")    

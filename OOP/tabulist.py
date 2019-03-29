@@ -57,7 +57,7 @@ class tabulist:
 ##        schedule[0].print_all()
 ##        self.short[0][0].print_all()
         if (self.DM.compareTwoSchedules(schedule, self.short[0])):
-            print("IN")
+##            print("IN")
             return True
         
 ##        for ClassList in self.short:

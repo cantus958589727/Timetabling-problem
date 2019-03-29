@@ -4,6 +4,7 @@ from Classroom import*
 from LoadDetail import*
 from ProfLoad import*
 from DBconnect import*
+from DataManipulator import*
 import copy
 
 class TimeSchedule(object):
@@ -17,6 +18,7 @@ class TimeSchedule(object):
         #        self.counter = 0
         #        #self.initialize()
         self.course_id = [['1919'], ['1920']]
+        self.dm = DataManipulator()
         db = DBconnect()
         self.all_prof = db.getCleanOneTuple(db.getAllProfFromDb())
         # def initialize(self):
@@ -343,8 +345,8 @@ class TimeSchedule(object):
 
         #--------------------------------End Long term stuff-------------------------
         #tabulist.print_short()
-        print("size: ", tabulist.sizeShort())
-        print("size: ", tabulist.sizeLong())
+        print("size of short term: ", tabulist.sizeShort())
+        print("size of long term: ", tabulist.sizeLong())
 
 ##    def chooseRandomCourseCombi(self, specificCourseList):
 #### this function gets a random combination of course and prof
@@ -401,11 +403,11 @@ class TimeSchedule(object):
             notAssigned = self.checkConflict_time(sched, self.all_prof[rand], specifictimeslot)
 
         prof = self.all_prof[rand]
-        print(prof)
+##        print(prof)
         sched[specifictimeslot[0]].get_time(specifictimeslot[1])[specifictimeslot[2]].set_prof(prof)
         sched[specifictimeslot[0]].get_time(specifictimeslot[1]+2)[specifictimeslot[2]].set_prof(prof)
 
-        print("to string: ", sched[specifictimeslot[0]].get_time(specifictimeslot[1]+2)[specifictimeslot[2]].toString())        
+##        print("to string: ", sched[specifictimeslot[0]].get_time(specifictimeslot[1]+2)[specifictimeslot[2]].toString())        
         if dfa is None:
             dfa = dict()
             
@@ -421,16 +423,24 @@ class TimeSchedule(object):
         
         for classroom in range(0, len(ClassroomList)):
             for day in range(1,3):
-                print("day",day)
+##                print("day",day)
                 for slot in range(0, len(ClassroomList[classroom].get_time(day))):
                     if(ClassroomList[classroom].get_time(day)[slot].get_prof() == " "):
-                        print("nice")
+##                        print("nice")
                         dictForcedAssign = self.forceAssign(ClassroomList, ClassroomList[classroom].get_time(day)[slot], dictForcedAssign, [classroom, day, slot])
 
         for x in ClassroomList:
             x.print_all()
+
+        self.dm.printDictionaryOfProfessors("Forced Load of Each Professors", dictForcedAssign)
+        tempDict = dict()
+        
+        for x in ClassroomList:
+            tempDict = self.dm.get_prof_total_classroom(x, tempDict)
             
-        print(dictForcedAssign)
+        self.dm.printDictionaryOfProfessors("Overall Load of Each Professors", tempDict)
+        
+##        print(dictForcedAssign)
 ##                        self.forceAssign(ClassroomList, ClassroomList[classroom].get_time(day+2)[slot], dictForcedAssign, [classroom, day+2, slot])
         
     
@@ -487,6 +497,8 @@ class TimeSchedule(object):
                     self.get_FlowCourse_count(courseArray, ClassroomList, timeslot, arrayCount, flowCourse)
 
         self.forceProf(ClassroomList)
+        print("After forcing professors..")
+        self.score(ClassroomList)
 ##            for x in ClassroomList:
 ##                x.print_all()
                     
@@ -995,6 +1007,34 @@ class TimeSchedule(object):
             tabu_list.enqueueLong(schedule)
 
         #function that takes classroomlist as a parameter
+    def maxScore(self,ClassroomList):
+        Mclass = 0
+        Tclass = 0
+        Wclass = 0
+        Hclass = 0
+        Fclass = 0
+        for x in range (0,len(ClassroomList)):
+                for y in range (0,len(ClassroomList[x].get_monday_time())):
+                    if(ClassroomList[x].get_monday_time()[y].get_course()!=None):
+                        Mclass+=1
+        for x in range (0,len(ClassroomList)):
+                for y in range (0,len(ClassroomList[x].get_tuesday_time())):
+                    if(ClassroomList[x].get_tuesday_time()[y].get_course()!=None):
+                        Tclass+=1
+        for x in range (0,len(ClassroomList)):
+                for y in range (0,len(ClassroomList[x].get_wednesday_time())):
+                    if(ClassroomList[x].get_wednesday_time()[y].get_course()!=None):
+                        Wclass+=1
+        for x in range (0,len(ClassroomList)):
+                for y in range (0,len(ClassroomList[x].get_thursday_time())):
+                    if(ClassroomList[x].get_thursday_time()[y].get_course()!=None):
+                        Hclass+=1
+                        
+        for x in range (0,len(ClassroomList)):
+                for y in range (0,len(ClassroomList[x].get_friday_time())):
+                    if(ClassroomList[x].get_friday_time()[y].get_course()!=None):
+                        Fclass+=1
+        return ((Mclass+Tclass+Wclass+Hclass+Fclass)*3)*1.4
     def score(self, ClassroomList):
         def FindProf(Loadlist,profID):
          #   print("at find prof")
@@ -1235,10 +1275,18 @@ class TimeSchedule(object):
         print(str(fullfilledSpread+(courseInTime/totalClass)/2))
         if (noProf >0):
             print("some subjects have no prof")
+            #print(str(noProf)+" out of "+ str(totalClass))
+        print("no prof: "+str(noProf/totalClass))
         if (consecutiveHours > 0):
             print("some prof teach more than 4.5 hours in a row")
+            #print(str(consecutiveHours)+" out of "+ str(totalClass))
+        print("consecutive hours: "+str(consecutiveHours/totalClass))
         if (overload > 0):
             print("some prof have too much schedule this term")
+            #print(str(overload)+" out of "+ str(totalClass))
+        print("overload: "+str(overload/totalClass))
+        print("spread: "+ str(fullfilledSpread))
+        print("preffered Time: "+ str((courseInTime/totalClass)))
         baseScore = totalClass*3
         p = 0.4 #maximum bonus percentage
         p1 = .5*p*fullfilledSpread
